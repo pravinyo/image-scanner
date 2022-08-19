@@ -9,8 +9,7 @@ import org.opencv.imgproc.Imgproc
 class SharpeningFilter : Filter {
 
      override fun convert(colorImage: Mat): Mat {
-        val yuvImage = Mat()
-        Imgproc.cvtColor(colorImage, yuvImage, Imgproc.COLOR_BGR2YUV)
+        val yuvImage = getImageInYUV(colorImage)
 
         val channels = mutableListOf<Mat>()
         Core.split(yuvImage, channels)
@@ -24,6 +23,12 @@ class SharpeningFilter : Filter {
         Imgproc.cvtColor(output, output, Imgproc.COLOR_YUV2BGR)
         return output
     }
+
+   private fun getImageInYUV(colorImage: Mat): Mat {
+      val yuvImage = Mat()
+      Imgproc.cvtColor(colorImage, yuvImage, Imgproc.COLOR_BGR2YUV)
+      return yuvImage
+   }
 
    private fun performSharpening( image: Mat): Mat {
       val blurImage = Mat()
