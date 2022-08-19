@@ -6,7 +6,7 @@ import org.opencv.photo.Photo
 class RemoveNoiseFilter: Filter {
     override fun convert(colorImage: Mat): Mat {
         val output = Mat()
-        Photo.fastNlMeansDenoising(colorImage, output, 30f, 7, 21)
+        Photo.fastNlMeansDenoisingColored(colorImage, output, 10f, 10f, 7, 21)
         return output
     }
 }
