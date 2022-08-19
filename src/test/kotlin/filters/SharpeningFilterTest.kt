@@ -27,6 +27,6 @@ class SharpeningFilterTest {
         val actual = sharpeningFilter.convert(input)
 
         assertNotEquals(unExpectedImage, actual)
-        ImageUtils.saveImage("filters/sharpening_sample3.jpeg", actual)
+        ImageUtils.saveImage("filters/sharpening_sample4.jpeg", actual)
     }
 }
