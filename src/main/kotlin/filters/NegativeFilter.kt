@@ -3,10 +3,10 @@ package filters
 import org.opencv.core.Core
 import org.opencv.core.Mat
 
-class NegativeFilter {
-    fun convert(input: Mat): Mat {
+class NegativeFilter : Filter {
+    override fun convert(colorImage: Mat): Mat {
         val output = Mat()
-        Core.bitwise_not(input, output)
+        Core.bitwise_not(colorImage, output)
         return output
     }
 }

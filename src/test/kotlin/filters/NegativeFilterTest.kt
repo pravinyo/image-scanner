@@ -5,9 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
-import org.opencv.imgcodecs.Imgcodecs
 import utility.ImageUtils
-
 
 
 class NegativeFilterTest {

@@ -4,11 +4,12 @@ import org.opencv.core.Mat
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 
-class BlackAndWhiteFilter {
-    fun convert(input: Mat): Mat {
+class BlackAndWhiteFilter : Filter {
+
+    override fun convert(colorImage: Mat): Mat {
         val output = Mat()
 
-        val grayScape = convertToGrayscale(input)
+        val grayScape = convertToGrayscale(colorImage)
         val normalizeGrayScaleImage = adaptiveHistogramEqualization(grayScape)
         Imgproc.threshold(normalizeGrayScaleImage, output, 128.0, 255.0, Imgproc.THRESH_OTSU)
 
