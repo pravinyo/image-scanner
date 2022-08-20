@@ -24,6 +24,6 @@ internal class SmoothingFilterTest {
         val actual = smoothingFilter.convert(input)
 
         assertNotEquals(unExpectedImage, actual)
-        ImageUtils.saveImage("filters/smoothing_sample2.jpeg", actual)
+        ImageUtils.saveImage("filters/smoothing_sample4.jpeg", actual)
     }
 }

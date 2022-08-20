@@ -2,14 +2,13 @@ package filters
 
 import org.opencv.core.Core
 import org.opencv.core.Mat
-import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 
 class SmoothingFilter : Filter {
     override fun convert(colorImage: Mat): Mat {
         val smoothImage = Mat()
-        val equalizedImage = histogramEqualizationUsingYUV(colorImage)
-        Imgproc.GaussianBlur(equalizedImage, smoothImage, Size(5.0, 5.0), 0.0, 0.0, Core.BORDER_DEFAULT)
+        val equalizeImage = histogramEqualizationUsingYUV(colorImage)
+        Imgproc.bilateralFilter(equalizeImage, smoothImage, 9, 75.0, 75.0)
         return smoothImage
     }
 
