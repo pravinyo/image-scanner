@@ -9,6 +9,7 @@ import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
+import utility.AssertionsUtil
 import utility.ImageUtils
 
 class SharpeningFilterTest {
@@ -26,7 +27,6 @@ class SharpeningFilterTest {
 
         val actual = sharpeningFilter.convert(input)
 
-        assertNotEquals(unExpectedImage, actual)
-        ImageUtils.saveImage("filters/sharpening_sample4.jpeg", actual)
+        assertFalse(AssertionsUtil.areEqual(unExpectedImage, actual))
     }
 }

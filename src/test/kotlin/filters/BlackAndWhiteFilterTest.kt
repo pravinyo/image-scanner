@@ -1,9 +1,11 @@
 package filters
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
+import org.opencv.core.CvType
 import utility.ImageUtils
 
 class BlackAndWhiteFilterTest {
@@ -18,11 +20,11 @@ class BlackAndWhiteFilterTest {
     @Test
     fun `given color image, it should be able to convert to black and white type`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val unExpected = input.clone()
 
         val actual = blackAndWhiteFilter.convert(input)
 
-        assertNotEquals(unExpected, actual)
-        ImageUtils.saveImage("filters/blackAndWhite_sample3.jpeg", actual)
+        assertEquals(input.size(), actual.size())
+        assertNotEquals(input.channels(), actual.channels())
+        assertEquals(CvType.CV_8U, actual.type())
     }
 }

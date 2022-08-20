@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
+import utility.AssertionsUtil
 import utility.ImageUtils
 
 internal class RemoveNoiseFilterTest {
@@ -23,7 +24,6 @@ internal class RemoveNoiseFilterTest {
 
         val actual = removeNoiseFilter.convert(input)
 
-        assertNotEquals(unExpectedImage, actual)
-        ImageUtils.saveImage("filters/removeNoise_sample.jpeg", actual)
+        assertFalse(AssertionsUtil.areEqual(unExpectedImage, actual))
     }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
+import utility.AssertionsUtil
 import utility.ImageUtils
 
 
@@ -24,7 +25,6 @@ class NegativeFilterTest {
 
         val actual = negativeFilter.convert(input)
 
-        Assertions.assertNotEquals(unExpectedOutput, actual)
-        ImageUtils.saveImage("filters/negative_sample.jpg", actual)
+        Assertions.assertFalse(AssertionsUtil.areEqual(unExpectedOutput, actual))
     }
 }
