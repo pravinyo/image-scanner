@@ -1,11 +1,11 @@
 package transformations
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
+import org.opencv.core.Size
 import utility.ImageUtils
 
 internal class ScalingTransformationTest {
@@ -16,15 +16,50 @@ internal class ScalingTransformationTest {
     }
 
     @Test
-    fun `given color image, It should be able to 2 times of its current size`() {
+    fun `given color image, It should be able to convert 2 times of its current size`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val scalingTransformation = ScalingTransformation()
+        val config = ScalingTransformationConfig(
+            outputSize = Size(input.size().width * 2, input.size().height * 2),
+            scalingType = ScalingType.SCALE_UP
+        )
+        val scalingTransformation = ScalingTransformation(config)
 
         val actual = scalingTransformation.execute(input)
 
         assertEquals(input.size().width * 2, actual.size().width)
         assertEquals(input.size().height * 2, actual.size().height)
         assertEquals(input.type(), actual.type())
-        ImageUtils.saveImage("transformation/scaling_up_inter_cubic.jpg", actual)
+    }
+
+    @Test
+    fun `given color image, It should be able to convert half size of its current size`() {
+        val input = ImageUtils.loadImage("input/sample.jpeg")
+        val config = ScalingTransformationConfig(
+            outputSize = Size(input.size().width * 0.5, input.size().height * 0.5)
+        )
+        val scalingTransformation = ScalingTransformation(config)
+
+        val actual = scalingTransformation.execute(input)
+
+        assertEquals(input.size().width * 0.5, actual.size().width)
+        assertEquals(input.size().height * 0.5, actual.size().height)
+        assertEquals(input.type(), actual.type())
+    }
+
+    @Test
+    fun `given color image, It should be able to scale in x and y direction`() {
+        val input = ImageUtils.loadImage("input/sample.jpeg")
+        val config = ScalingTransformationConfig(
+            scaleInXDirection = 1.1,
+            scaleInYDirection = 1.2,
+            scalingType = ScalingType.SCALE_UP
+        )
+        val scalingTransformation = ScalingTransformation(config)
+
+        val actual = scalingTransformation.execute(input)
+
+        assertTrue((1408.0).compareTo(actual.size().width) == 0)
+        assertTrue((1152.0).compareTo(actual.size().height) == 0)
+        assertEquals(input.type(), actual.type())
     }
 }
