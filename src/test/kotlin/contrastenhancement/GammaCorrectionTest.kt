@@ -28,4 +28,17 @@ class GammaCorrectionTest {
          assertEquals(CvType.CV_8UC1, actual.type())
          ImageUtils.saveImage("contrastenhancement/gamma_2.jpeg", actual)
      }
+
+    @Test
+    fun `given color image, it should be able to enhance dark pixels`() {
+        val input = ImageUtils.loadImage("input/sample.jpeg")
+        val gammaCorrection = GammaCorrection(0.8)
+
+        val actual = gammaCorrection.execute(input)
+
+        assertEquals(input.size(), actual.size())
+        assertEquals(input.channels(), actual.channels())
+        assertEquals(input.type(), actual.type())
+        ImageUtils.saveImage("contrastenhancement/gamma_2.jpeg", actual)
+    }
  }
