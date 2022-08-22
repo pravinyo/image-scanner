@@ -8,8 +8,8 @@ import transformations.RotationTransformationConfig.*
 
 class RotationTransformation(
     private val rotationTransformationConfig: RotationTransformationConfig
-) {
-    fun execute(colorImage: Mat): Mat {
+) : Transformation {
+    override fun execute(colorImage: Mat): Mat {
         val rotatedImage = Mat(colorImage.size(), colorImage.type())
 
         when (rotationTransformationConfig) {

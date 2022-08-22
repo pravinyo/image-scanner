@@ -64,12 +64,13 @@ class RotationTransformationTest {
     @Test
     fun `given color image, it should be able to rotate by 30 degree clockwise`() {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
-        val rotationTransformation = RotationTransformation(ArbitraryDirectionConfig(30.0))
+        val rotationTransformation = RotationTransformation(ArbitraryDirectionConfig(angle = 30.0, scale = 0.6))
 
         val actual = rotationTransformation.execute(input)
 
         assertFalse(areEqual(input, actual))
         assertEquals(input.type(), actual.type())
+        ImageUtils.saveImage("transformation/rotation_scale_1.jpeg", actual)
     }
 
 }
