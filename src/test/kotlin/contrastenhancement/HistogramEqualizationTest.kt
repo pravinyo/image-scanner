@@ -37,5 +37,6 @@ class HistogramEqualizationTest {
         assertEquals(input.size(), actual.size())
         assertEquals(input.channels(), actual.channels())
         assertEquals(input.type(), actual.type())
+        ImageUtils.saveImage("contrastenhancement/histogram.jpeg", actual)
     }
 }
