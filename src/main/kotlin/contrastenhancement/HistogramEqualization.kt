@@ -4,8 +4,8 @@ import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 
-class HistogramEqualization {
-    fun execute(image: Mat): Mat {
+class HistogramEqualization : ContractEnhancement {
+    override fun execute(image: Mat): Mat {
         val output = Mat()
 
         if (isColorImage(image.channels())) {
