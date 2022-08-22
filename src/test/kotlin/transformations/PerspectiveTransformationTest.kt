@@ -14,7 +14,7 @@ class PerspectiveTransformationTest {
     }
 
     @Test
-    fun `given 4 points on color image, it should be tranforms part in 4 points to seprarte image`() {
+    fun `given 4 points for input and output image, it should transform inside part to separate image`() {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
         val sourcePoints = mutableListOf<Point>()
         sourcePoints.add(Point(190.0, 300.0))
@@ -40,5 +40,22 @@ class PerspectiveTransformationTest {
         assertEquals(input.type(), actual.type())
         assertEquals(input.channels(), actual.channels())
         ImageUtils.saveImage("transformation/perspective_2.jpg", actual)
+    }
+
+    @Test
+    fun `given 4 points for input, it should transform inside part to separate image`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val sourcePoints = mutableListOf<Point>()
+        sourcePoints.add(Point(190.0, 300.0))
+        sourcePoints.add(Point(1100.0, 290.0))
+        sourcePoints.add(Point(198.0, 957.0))
+        sourcePoints.add(Point(1140.0, 957.0))
+        val perspectiveTransformation = PerspectiveTransformation(sourcePoints)
+
+        val actual = perspectiveTransformation.execute(input)
+
+        assertEquals(Size(942.0, 668.0), actual.size())
+        assertEquals(input.type(), actual.type())
+        assertEquals(input.channels(), actual.channels())
     }
 }
