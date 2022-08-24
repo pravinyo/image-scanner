@@ -9,6 +9,8 @@ class ImageContrastAdjustment(
 ) : ContractEnhancement {
     override fun execute(image: Mat): Mat {
         checkImageChannels(image)
+        if (!isSaturationValid()) return image.clone()
+
         var input = image.clone()
         var channelsAndyComponent: Pair<List<Mat>, Mat> = Pair(emptyList(), Mat())
 
@@ -46,6 +48,10 @@ class ImageContrastAdjustment(
         return output
     }
 
+    private fun isSaturationValid(): Boolean {
+        return config.saturationPercentage > 0
+    }
+
     private fun isColorImage(image: Mat): Boolean {
         return image.channels() == 3
     }
@@ -63,18 +69,17 @@ class ImageContrastAdjustment(
     ): Int {
         val outputBound = config.outputBound
         val difference = max(0, intensityValue - lowerBound)
-        val transformedValue =
-            min((difference.times(scale) + 0.5f).toInt() + outputBound.first, outputBound.second)
-        return transformedValue
+        return min((difference.times(scale) + 0.5f).toInt() + outputBound.first, outputBound.second)
     }
 
     private fun getInputBound(image: Mat, cumulativeHistogram: IntArray): Pair<Int, Int> {
         val total = image.rows() * image.cols()
-        val lowerPercentile = total * config.saturationPercentage / 100
-        val upperPercentile = total * (100 - config.saturationPercentage) / 100
+        val saturation = max(0, min(config.saturationPercentage, 100))
+        val lowerPercentile = total * saturation / 100
+        val upperPercentile = total * (100 - saturation) / 100
 
-        val lowerBoundIntensityValue = cumulativeHistogram.binarySearch(lowerPercentile)
-        val upperBoundIntensityValue = cumulativeHistogram.binarySearch(upperPercentile)
+        val lowerBoundIntensityValue = max(config.inputBound?.first ?: Int.MIN_VALUE, cumulativeHistogram.binarySearch(lowerPercentile))
+        val upperBoundIntensityValue = min(config.inputBound?.second ?: Int.MAX_VALUE, cumulativeHistogram.binarySearch(upperPercentile))
 
         val inputLowerBoundFinal =
             if (lowerBoundIntensityValue < 0) -lowerBoundIntensityValue else lowerBoundIntensityValue

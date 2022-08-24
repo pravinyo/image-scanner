@@ -62,14 +62,38 @@ class ImageContrastAdjustmentTest {
     @Test
     fun `given color image, it should be able to adjust contrast`() {
         val input = ImageUtils.loadImage("input/low_contrast.png")
-        val config = ImageContrastAdjustConfig()
-        val imageContrastAdjustment = ImageContrastAdjustment(config)
+        val configs = mutableListOf<ImageContrastAdjustConfig>()
+        configs.add(ImageContrastAdjustConfig())
+        configs.add(ImageContrastAdjustConfig(
+            saturationPercentage = 2
+        ))
+        configs.add(ImageContrastAdjustConfig(
+            saturationPercentage = 2,
+            inputBound = Pair(50, 200)
+        ))
+        configs.add(ImageContrastAdjustConfig(
+            saturationPercentage = 2,
+            inputBound = Pair(70, 200)
+        ))
+        configs.add(ImageContrastAdjustConfig(
+            saturationPercentage = 2,
+            inputBound = Pair(70, 150)
+        ))
+        configs.add(ImageContrastAdjustConfig(
+            saturationPercentage = 2,
+            inputBound = Pair(70, 150),
+            outputBound = Pair(50, 200)
+        ))
 
-        val actual = imageContrastAdjustment.execute(input)
+        configs.forEachIndexed { index, config ->
+            val imageContrastAdjustment = ImageContrastAdjustment(config)
 
-        assertEquals(input.size(), actual.size())
-        assertEquals(input.channels(), actual.channels())
-        assertEquals(input.type(), actual.type())
-        ImageUtils.saveImage("contrastenhancement/imadjust_2.jpeg", actual)
+            val actual = imageContrastAdjustment.execute(input)
+
+            assertEquals(input.size(), actual.size())
+            assertEquals(input.channels(), actual.channels())
+            assertEquals(input.type(), actual.type())
+            ImageUtils.saveImage("contrastenhancement/imadjust_$index.jpeg", actual)
+        }
     }
  }
