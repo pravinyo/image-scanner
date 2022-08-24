@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.CvType
+import org.opencv.core.MatOfDouble
 import org.opencv.imgproc.Imgproc
 import utility.ImageUtils
 
@@ -29,4 +30,32 @@ class ImageContrastAdjustmentTest {
          assertEquals(CvType.CV_8UC1, actual.type())
          ImageUtils.saveImage("contrastenhancement/imadjust_2.jpg", actual)
      }
+
+    @Test
+    fun `given grayscale image, it should be able to adjust constrast based on mean and stddev`() {
+        val input = ImageUtils.loadImage("input/low_contrast_gray.png")
+        Imgproc.cvtColor(input, input, Imgproc.COLOR_BGR2GRAY)
+        ImageUtils.saveImage("contrastenhancement/imadjust_1.jpeg", input)
+
+        val meanMat = MatOfDouble()
+        val stdDevMat = MatOfDouble()
+        Core.meanStdDev(input, meanMat, stdDevMat)
+
+        val mean = meanMat.get(0, 0)[0].toInt()
+        val stdDev = stdDevMat.get(0, 0)[0].toInt()
+        val n = 2
+
+        val config = ImageContrastAdjustConfig(
+            inputBound = Pair(mean - n * stdDev, mean + n * stdDev),
+            outputBound = Pair(100, 250)
+        )
+        val imageContrastAdjustment = ImageContrastAdjustment(config)
+
+        val actual = imageContrastAdjustment.execute(input)
+
+        assertEquals(input.size(), actual.size())
+        assertEquals(input.channels(), actual.channels())
+        assertEquals(CvType.CV_8UC1, actual.type())
+        ImageUtils.saveImage("contrastenhancement/imadjust_2.jpeg", actual)
+    }
  }
