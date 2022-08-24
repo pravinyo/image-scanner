@@ -19,7 +19,8 @@ class ImageContrastAdjustmentTest {
          val input = ImageUtils.loadImage("input/low_contrast.png")
          Imgproc.cvtColor(input, input, Imgproc.COLOR_BGR2GRAY)
          ImageUtils.saveImage("contrastenhancement/imadjust_1.jpg", input)
-         val imageContrastAdjustment = ImageContrastAdjustment()
+
+         val imageContrastAdjustment = ImageContrastAdjustment(ImageContrastAdjustConfig())
 
          val actual = imageContrastAdjustment.execute(input)
 
