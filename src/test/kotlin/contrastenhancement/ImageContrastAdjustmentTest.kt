@@ -58,4 +58,18 @@ class ImageContrastAdjustmentTest {
         assertEquals(CvType.CV_8UC1, actual.type())
         ImageUtils.saveImage("contrastenhancement/imadjust_2.jpeg", actual)
     }
+
+    @Test
+    fun `given color image, it should be able to adjust contrast`() {
+        val input = ImageUtils.loadImage("input/low_contrast.png")
+        val config = ImageContrastAdjustConfig()
+        val imageContrastAdjustment = ImageContrastAdjustment(config)
+
+        val actual = imageContrastAdjustment.execute(input)
+
+        assertEquals(input.size(), actual.size())
+        assertEquals(input.channels(), actual.channels())
+        assertEquals(input.type(), actual.type())
+        ImageUtils.saveImage("contrastenhancement/imadjust_2.jpeg", actual)
+    }
  }

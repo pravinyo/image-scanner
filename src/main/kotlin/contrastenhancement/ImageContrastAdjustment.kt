@@ -8,20 +8,26 @@ class ImageContrastAdjustment(
     val config: ImageContrastAdjustConfig
 ) : ContractEnhancement {
     override fun execute(image: Mat): Mat {
-        if (image.channels() != 1) error("Channel should be 1 for image")
+        checkImageChannels(image)
+        var input = image.clone()
+        var channelsAndyComponent: Pair<List<Mat>, Mat> = Pair(emptyList(), Mat())
 
-        val cumulativeHistogram: IntArray = generateCumulativeHistogram(image)
-        val inputBound: Pair<Int, Int> = getInputBound(image, cumulativeHistogram)
+        if(isColorImage(image)) {
+            channelsAndyComponent = ImageUtils.getYComponentFromColorImage(image)
+            input = channelsAndyComponent.second
+        }
+        val cumulativeHistogram: IntArray = generateCumulativeHistogram(input)
+        val inputBound: Pair<Int, Int> = getInputBound(input, cumulativeHistogram)
 
         //stretching
         val scale = (config.outputBound.second - config.outputBound.first)
             .toFloat().div(inputBound.second - inputBound.first)
 
         //transformation
-        val output = Mat(image.size(), image.type())
-        for (row in 0 until image.rows()) {
-            for (col in 0 until image.cols()) {
-                val intensityValue = image.get(row, col)[0].toInt()
+        var output = Mat(input.size(), input.type())
+        for (row in 0 until input.rows()) {
+            for (col in 0 until input.cols()) {
+                val intensityValue = input.get(row, col)[0].toInt()
 
                 val transformedValue = linearTransformation(
                     intensityValue = intensityValue,
@@ -33,7 +39,21 @@ class ImageContrastAdjustment(
             }
         }
 
+        if(isColorImage(image)) {
+            output = ImageUtils.mergeYComponentReturnColorImage(channelsAndyComponent.first.toMutableList(),output)
+        }
+
         return output
+    }
+
+    private fun isColorImage(image: Mat): Boolean {
+        return image.channels() == 3
+    }
+
+    private fun checkImageChannels(image: Mat) {
+        if (image.channels() != 1 && image.channels() != 3) {
+            error("Channel should be 1 or 3 for image")
+        }
     }
 
     private fun linearTransformation(
