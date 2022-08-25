@@ -67,7 +67,6 @@ class Text(
             intArrayOf(parameters.baseLine)
         )
         val baseLine = parameters.baseLine + parameters.thickness
-
         val bestPosition = findBestPositionOnImage(textSize, parameters.bottomLeftCorner, image.size())
 
         Imgproc.rectangle(
@@ -88,14 +87,11 @@ class Text(
             parameters.lineType,
             parameters.bottomLeftOrigin
         )
-
         return output
     }
 
     fun addRotatedTextWithRectangle(image: Mat, angle: Double): Mat {
-        val emptyImage = Mat.zeros(image.size(), image.type())
-        val input: Mat = addRectangleAroundText(emptyImage)
-
+        val intermediateImage = Mat.zeros(image.size(), image.type())
         val textSize = Imgproc.getTextSize(
             parameters.text,
             parameters.fontFace,
@@ -103,19 +99,43 @@ class Text(
             parameters.thickness,
             intArrayOf(parameters.baseLine)
         )
-
+        val baseLine = parameters.baseLine + parameters.thickness
         val bestPosition = findBestPositionOnImage(textSize, parameters.bottomLeftCorner, image.size())
+
+        Imgproc.rectangle(
+            intermediateImage,
+            Point(bestPosition.x, bestPosition.y + baseLine),
+            Point(bestPosition.x + textSize.width, bestPosition.y - textSize.height),
+            Scalar(0.0, 0.0, 255.0)
+        )
+
+        Imgproc.putText(
+            intermediateImage,
+            parameters.text,
+            bestPosition,
+            parameters.fontFace,
+            parameters.fontScale,
+            parameters.color,
+            parameters.thickness,
+            parameters.lineType,
+            parameters.bottomLeftOrigin
+        )
 
         val rotationConfig = RotationTransformationConfig.ArbitraryDirectionConfig(
             angle = angle,
             center = Point(bestPosition.x + textSize.width / 2, bestPosition.y + textSize.height / 2)
         )
-        val rotatedTextImage = RotationTransformation(rotationConfig).execute(input)
+        val rotatedTextImage = RotationTransformation(rotationConfig).execute(intermediateImage)
 
-        val output = Mat()
-        Core.add(image, rotatedTextImage, output)
+        val output = image.clone()
+        for (row in 0 until image.rows()) {
+            for (col in 0 until image.cols()) {
+                val count = rotatedTextImage.get(row, col).sum()
+                if (count > 0) { output.put(row, col, *rotatedTextImage.get(row, col)) }
+            }
+        }
+
         return output
-
     }
 
 }
