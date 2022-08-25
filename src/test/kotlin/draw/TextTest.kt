@@ -46,7 +46,7 @@ internal class TextTest {
             text = "I am Pravin Tripathi",
             fontFace = Core.FONT_HERSHEY_SCRIPT_COMPLEX,
             fontScale = 2.0,
-            bottomLeftCorner = Point(input.cols()-100.0, 0.0),
+            bottomLeftCorner = Point(input.cols() - 100.0, 0.0),
             color = Scalar(255.0, 0.0, 0.0)
         )
         val text = Text(parameters)
@@ -162,9 +162,13 @@ internal class TextTest {
         )
         val text = Text(parameters)
 
-        val actual = text.addTextWithTransformation(input)
+        val perspectiveTransformParameters = TextPerspectiveTransformParameters(
+            bottomLeft = Point(0.0, 10.0),
+            bottomRight = Point(10.0, -40.0)
+        )
+        val actual = text.addTextWithPerspectiveTransform(input, perspectiveTransformParameters)
 
-//        assertFalse(areEqual(input, actual))
-        ImageUtils.saveImage("draw/text_6.jpg", actual)
+        assertFalse(areEqual(input, actual))
+        ImageUtils.saveImage("draw/text_7.jpg", actual)
     }
 }

@@ -44,24 +44,30 @@ class Text(
         return image.copyAndOverrideWith(rotatedTextImage)
     }
 
-    fun addTextWithTransformation(image: Mat): Mat {
+    fun addTextWithPerspectiveTransform(
+        image: Mat,
+        perspectiveTransformParameters: TextPerspectiveTransformParameters
+    ): Mat {
         val intermediateImage = Mat.zeros(image.size(), image.type())
         val textSize = getTextSize()
         val bestPosition = findBestPositionOnImage(textSize, image.size())
-
-        addTextTo(intermediateImage, bestPosition)
         val sourcePoints = listOf(
-            Point(bestPosition.x, bestPosition.y), //TL
-            Point(bestPosition.x + textSize.width, bestPosition.y + 40), //TR
-            Point(bestPosition.x, bestPosition.y - textSize.height), //BL
-            Point(bestPosition.x + textSize.width, bestPosition.y - textSize.height) // BR
+            Point(bestPosition.x, bestPosition.y)
+                .add(perspectiveTransformParameters.topLeft),
+            Point(bestPosition.x + textSize.width, bestPosition.y)
+                .add(perspectiveTransformParameters.topRight),
+            Point(bestPosition.x, bestPosition.y - textSize.height)
+                .add(perspectiveTransformParameters.bottomLeft),
+            Point(
+                bestPosition.x + textSize.width,
+                bestPosition.y - textSize.height
+            ).add(perspectiveTransformParameters.bottomRight)
         )
 
-        sourcePoints.forEach { point ->
-            Imgproc.circle(intermediateImage, point, 2, Scalar(0.0, 0.0, 255.0), 2)
-        }
+        addTextTo(intermediateImage, bestPosition)
 
         val transformedTextImage = PerspectiveTransformation(sourcePoints).execute(intermediateImage)
+
         val intermediateImage2 = Mat.zeros(image.size(), image.type())
         transformedTextImage.copyTo(
             intermediateImage2.submat(
@@ -75,6 +81,10 @@ class Text(
         )
 
         return image.copyAndOverrideWith(intermediateImage2)
+    }
+
+    private fun Point.add(other: Point): Point {
+        return Point(this.x + other.x, this.y + other.y)
     }
 
     private fun Mat.copyAndOverrideWith(other: Mat): Mat {
