@@ -26,7 +26,8 @@ internal class TextTest {
             fontFace = Core.FONT_HERSHEY_SCRIPT_COMPLEX,
             fontScale = 2.0,
             bottomLeftCorner = Point(112.0, 148.0),
-            color = Scalar(255.0, 0.0, 0.0)
+            color = Scalar(255.0, 0.0, 0.0),
+            bottomLeftOrigin = true
         )
         val text = Text(parameters)
 
@@ -109,5 +110,24 @@ internal class TextTest {
 
         assertFalse(areEqual(input, actual))
         ImageUtils.saveImage("draw/text_3.jpg", actual)
+    }
+
+    @Test
+    fun `it should be able add text with shapes to the image`() {
+        val input = ImageUtils.loadImage("input/sample.jpeg")
+        val parameters = TextParameters(
+            text = "I am Pravin Tripathi",
+            fontFace = Core.FONT_HERSHEY_SCRIPT_COMPLEX,
+            fontScale = 2.0,
+            thickness = 2,
+            bottomLeftCorner = Point(input.rows() / 2.0, input.cols() / 2.0),
+            color = Scalar(255.0, 0.0, 0.0)
+        )
+        val text = Text(parameters)
+
+        val actual = text.addLogo(input)
+
+        assertFalse(areEqual(input, actual))
+        ImageUtils.saveImage("draw/text_4.jpg", actual)
     }
 }
