@@ -1,10 +1,9 @@
 package draw
 
-import org.opencv.core.Mat
-import org.opencv.core.Point
-import org.opencv.core.Scalar
-import org.opencv.core.Size
+import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
+import transformations.RotationTransformation
+import transformations.RotationTransformationConfig
 
 class Text(
     private val parameters: TextParameters
@@ -58,7 +57,7 @@ class Text(
         return Point(x, y)
     }
 
-    fun addLogo(image: Mat): Mat {
+    fun addRectangleAroundText(image: Mat): Mat {
         val output = image.clone()
         val textSize = Imgproc.getTextSize(
             parameters.text,
@@ -74,7 +73,7 @@ class Text(
         Imgproc.rectangle(
             output,
             Point(bestPosition.x, bestPosition.y + baseLine),
-            Point(bestPosition.x + textSize.width, bestPosition.y  - textSize.height),
+            Point(bestPosition.x + textSize.width, bestPosition.y - textSize.height),
             Scalar(0.0, 0.0, 255.0)
         )
 
@@ -91,6 +90,32 @@ class Text(
         )
 
         return output
+    }
+
+    fun addRotatedTextWithRectangle(image: Mat, angle: Double): Mat {
+        val emptyImage = Mat.zeros(image.size(), image.type())
+        val input: Mat = addRectangleAroundText(emptyImage)
+
+        val textSize = Imgproc.getTextSize(
+            parameters.text,
+            parameters.fontFace,
+            parameters.fontScale,
+            parameters.thickness,
+            intArrayOf(parameters.baseLine)
+        )
+
+        val bestPosition = findBestPositionOnImage(textSize, parameters.bottomLeftCorner, image.size())
+
+        val rotationConfig = RotationTransformationConfig.ArbitraryDirectionConfig(
+            angle = angle,
+            center = Point(bestPosition.x + textSize.width / 2, bestPosition.y + textSize.height / 2)
+        )
+        val rotatedTextImage = RotationTransformation(rotationConfig).execute(input)
+
+        val output = Mat()
+        Core.add(image, rotatedTextImage, output)
+        return output
+
     }
 
 }
