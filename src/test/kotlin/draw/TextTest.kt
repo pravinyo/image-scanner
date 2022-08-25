@@ -148,4 +148,23 @@ internal class TextTest {
         assertFalse(areEqual(input, actual))
         ImageUtils.saveImage("draw/text_5.jpg", actual)
     }
+
+    @Test
+    fun `it should be able add text with 30 degree rotation and do perspective transform to the image`() {
+        val input = ImageUtils.loadImage("input/sample.jpeg")
+        val parameters = TextParameters(
+            text = "I am Pravin Tripathi",
+            fontFace = Core.FONT_HERSHEY_SCRIPT_COMPLEX,
+            fontScale = 2.0,
+            thickness = 2,
+            bottomLeftCorner = Point(input.rows() / 2.0, input.cols() / 2.0 - 300),
+            color = Scalar(255.0, 0.0, 0.0)
+        )
+        val text = Text(parameters)
+
+        val actual = text.addTextWithTransformation(input)
+
+//        assertFalse(areEqual(input, actual))
+        ImageUtils.saveImage("draw/text_6.jpg", actual)
+    }
 }

@@ -1,10 +1,8 @@
 package draw
 
-import org.opencv.core.Mat
-import org.opencv.core.Point
-import org.opencv.core.Scalar
-import org.opencv.core.Size
+import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
+import transformations.PerspectiveTransformation
 import transformations.RotationTransformation
 import transformations.RotationTransformationConfig.ArbitraryDirectionConfig
 
@@ -44,6 +42,39 @@ class Text(
         val rotatedTextImage = RotationTransformation(rotationConfig).execute(intermediateImage)
 
         return image.copyAndOverrideWith(rotatedTextImage)
+    }
+
+    fun addTextWithTransformation(image: Mat): Mat {
+        val intermediateImage = Mat.zeros(image.size(), image.type())
+        val textSize = getTextSize()
+        val bestPosition = findBestPositionOnImage(textSize, image.size())
+
+        addTextTo(intermediateImage, bestPosition)
+        val sourcePoints = listOf(
+            Point(bestPosition.x, bestPosition.y), //TL
+            Point(bestPosition.x + textSize.width, bestPosition.y + 40), //TR
+            Point(bestPosition.x, bestPosition.y - textSize.height), //BL
+            Point(bestPosition.x + textSize.width, bestPosition.y - textSize.height) // BR
+        )
+
+        sourcePoints.forEach { point ->
+            Imgproc.circle(intermediateImage, point, 2, Scalar(0.0, 0.0, 255.0), 2)
+        }
+
+        val transformedTextImage = PerspectiveTransformation(sourcePoints).execute(intermediateImage)
+        val intermediateImage2 = Mat.zeros(image.size(), image.type())
+        transformedTextImage.copyTo(
+            intermediateImage2.submat(
+                Rect(
+                    bestPosition.x.toInt(),
+                    bestPosition.y.toInt(),
+                    transformedTextImage.cols(),
+                    transformedTextImage.rows()
+                )
+            )
+        )
+
+        return image.copyAndOverrideWith(intermediateImage2)
     }
 
     private fun Mat.copyAndOverrideWith(other: Mat): Mat {
