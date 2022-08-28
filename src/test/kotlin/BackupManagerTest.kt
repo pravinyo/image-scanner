@@ -1,5 +1,7 @@
+import io.mockk.justRun
 import io.mockk.mockk
-import org.junit.jupiter.api.Assertions
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,4 +27,26 @@ class BackupManagerTest {
 
         assertEquals(1, actualSize)
     }
+
+    @Test
+    fun `it should be able to remove last snapshot and run`() {
+        val image = Mat()
+        val imageEditor = mockk<ImageEditor>()
+        val snapshot = Snapshot(listOf("RotateOperation"), image, imageEditor)
+        val spySnapshot = spyk(snapshot)
+
+        val backupManager = BackupManager()
+        backupManager.add(spySnapshot)
+
+        justRun { imageEditor.setActiveImage(any()) }
+        justRun { imageEditor.resetOperationList(any()) }
+
+        val response = backupManager.runLastSnapshot()
+        assertEquals(true, response)
+
+        verify(exactly = 1) {
+            spySnapshot.restore()
+        }
+    }
+
 }
