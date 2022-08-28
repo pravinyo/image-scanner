@@ -1,6 +1,6 @@
-import filters.GrayscaleFilter
-import filters.RemoveNoiseFilter
-import filters.RemoveNoiseFilterParameters
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -39,5 +39,21 @@ class ImageEditorTest {
 
         assertTrue(areEqual(newActiveImage, actualActiveImage))
         assertFalse(areEqual(input, actualActiveImage))
+    }
+
+    @Test
+    fun `it should be able to reset operation list for the image`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = mockk<StateManager>(relaxed = true)
+        val imageEditor = ImageEditor(input, stateManager)
+
+        every{ stateManager.initialize(any()) } returns Unit
+        val operationList = listOf("RotationOperation")
+
+        imageEditor.resetOperationList(operationList)
+
+        verify(exactly = 1) {
+            stateManager.resetOperationsInfo(operationList)
+        }
     }
 }

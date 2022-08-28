@@ -25,4 +25,9 @@ class StateManager {
     fun appendOperationInfo(operationType: String) {
         operations.push(operationType)
     }
+
+    fun resetOperationsInfo(operationList: List<String>) {
+        operations.clear()
+        operations.addAll(operationList)
+    }
 }

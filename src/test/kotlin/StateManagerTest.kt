@@ -58,4 +58,19 @@ internal class StateManagerTest {
 
         assertNotEquals(emptyList<List<String>>(), actualOperations)
     }
+
+    @Test
+    fun `it should reset operation info`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = StateManager()
+        stateManager.initialize(input)
+        stateManager.appendOperationInfo("RotationOperation")
+        val operationList = emptyList<String>()
+
+
+        stateManager.resetOperationsInfo(operationList)
+        val actualOperations = stateManager.getOperationsInfo()
+
+        assertEquals(emptyList<List<String>>(), actualOperations)
+    }
 }
