@@ -1,9 +1,15 @@
 import org.opencv.core.Mat
 
 class ImageEditor(
-    val image : Mat
+    val image : Mat,
+    private val stateManager: StateManager
 ) {
+
+    init {
+        stateManager.initialize(image)
+    }
+
     fun activeImage(): Mat {
-        return image.clone()
+        return stateManager.getActiveImage()
     }
 }

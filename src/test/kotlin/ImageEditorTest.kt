@@ -1,3 +1,4 @@
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -14,9 +15,10 @@ class ImageEditorTest {
     }
 
     @Test
-    fun `it should return active image`() {
+    fun `when no operation performed it should return original image as active image`() {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
-        val imageEditor = ImageEditor(input)
+        val stateManager = StateManager()
+        val imageEditor = ImageEditor(input, stateManager)
 
         val activeImage = imageEditor.activeImage()
 

@@ -15,6 +15,7 @@ dependencies {
     implementation(files("C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/opencv-3416.jar"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation("io.mockk:mockk:1.12.7")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
