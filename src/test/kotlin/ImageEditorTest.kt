@@ -1,7 +1,4 @@
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.slot
-import io.mockk.verify
+import io.mockk.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -97,5 +94,23 @@ class ImageEditorTest {
 
         assertEquals(emptyList<String>(), snapshotSlot.captured.getOperations())
         assertTrue(areEqual(input, snapshotSlot.captured.activeImage()))
+    }
+
+    @Test
+    fun `it should be able to restore to previous state`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = mockk<StateManager>(relaxed = true)
+        val backupManager = mockk<BackupManager>()
+        val imageEditor = ImageEditor(input, stateManager, backupManager)
+
+        justRun { stateManager.initialize(any()) }
+        every { backupManager.runLastSnapshot() } returns true
+        val operationList = listOf("RotationOperation")
+
+        imageEditor.resetOperationList(operationList)
+
+        imageEditor.undoChanges()
+
+        verify(exactly = 1) { backupManager.runLastSnapshot() }
     }
 }

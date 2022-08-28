@@ -29,4 +29,8 @@ class ImageEditor(
     fun takeCommand() {
         backupManager.add(createSnapshot())
     }
+
+    fun undoChanges() {
+        backupManager.runLastSnapshot()
+    }
 }
