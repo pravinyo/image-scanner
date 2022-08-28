@@ -18,7 +18,7 @@ internal class ScalingTransformationTest {
     @Test
     fun `given color image, It should be able to convert 2 times of its current size`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val config = ScalingTransformationConfig(
+        val config = ScalingTransformParameters(
             outputSize = Size(input.size().width * 2, input.size().height * 2),
             scalingType = ScalingType.SCALE_UP
         )
@@ -34,7 +34,7 @@ internal class ScalingTransformationTest {
     @Test
     fun `given color image, It should be able to convert half size of its current size`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val config = ScalingTransformationConfig(
+        val config = ScalingTransformParameters(
             outputSize = Size(input.size().width * 0.5, input.size().height * 0.5)
         )
         val scalingTransformation = ScalingTransformation(config)
@@ -49,7 +49,7 @@ internal class ScalingTransformationTest {
     @Test
     fun `given color image, It should be able to scale in x and y direction`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val config = ScalingTransformationConfig(
+        val config = ScalingTransformParameters(
             scaleInXDirection = 1.1,
             scaleInYDirection = 1.2,
             scalingType = ScalingType.SCALE_UP

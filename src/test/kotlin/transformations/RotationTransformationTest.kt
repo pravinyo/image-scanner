@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
 import transformations.FixedRotationDirection.*
-import transformations.RotationTransformationConfig.*
+import transformations.RotationTransformParameters.*
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils
 
@@ -21,7 +21,7 @@ class RotationTransformationTest {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
         val expectedImage = Mat()
         Core.rotate(input, expectedImage, Core.ROTATE_90_CLOCKWISE)
-        val rotationTransformation = RotationTransformation(FixedDirectionConfig(DIRECTION_CLOCKWISE_90))
+        val rotationTransformation = RotationTransformation(FixedDirection(DIRECTION_CLOCKWISE_90))
 
         val actual = rotationTransformation.execute(input)
 
@@ -36,7 +36,7 @@ class RotationTransformationTest {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
         val expectedImage = Mat()
         Core.rotate(input, expectedImage, Core.ROTATE_180)
-        val rotationTransformation = RotationTransformation(FixedDirectionConfig(DIRECTION_180))
+        val rotationTransformation = RotationTransformation(FixedDirection(DIRECTION_180))
 
         val actual = rotationTransformation.execute(input)
 
@@ -51,7 +51,7 @@ class RotationTransformationTest {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
         val expectedImage = Mat()
         Core.rotate(input, expectedImage, Core.ROTATE_90_COUNTERCLOCKWISE)
-        val rotationTransformation = RotationTransformation(FixedDirectionConfig(DIRECTION_CLOCKWISE_270))
+        val rotationTransformation = RotationTransformation(FixedDirection(DIRECTION_CLOCKWISE_270))
 
         val actual = rotationTransformation.execute(input)
 
@@ -64,7 +64,7 @@ class RotationTransformationTest {
     @Test
     fun `given color image, it should be able to rotate by 30 degree clockwise`() {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
-        val rotationTransformation = RotationTransformation(ArbitraryDirectionConfig(angle = 30.0, scale = 0.6))
+        val rotationTransformation = RotationTransformation(ArbitraryDirection(angle = 30.0, scale = 0.6))
 
         val actual = rotationTransformation.execute(input)
 

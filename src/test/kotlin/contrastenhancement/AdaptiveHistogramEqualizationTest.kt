@@ -19,7 +19,7 @@ class AdaptiveHistogramEqualizationTest {
          val input = ImageUtils.loadImage("input/sample.jpeg")
          Imgproc.cvtColor(input, input, Imgproc.COLOR_BGR2GRAY)
          ImageUtils.saveImage("contrastenhancement/histogram_0.jpeg", input)
-         val histogramEqualization = AdaptiveHistogramEqualization(ClaheConfig(clipLimit = 2.0))
+         val histogramEqualization = AdaptiveHistogramEqualization(ClaheParameters(clipLimit = 2.0))
 
          val actual = histogramEqualization.execute(input)
 
@@ -32,7 +32,7 @@ class AdaptiveHistogramEqualizationTest {
     @Test
     fun `given color image, it should be able to equalize intensities`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val histogramEqualization = AdaptiveHistogramEqualization(ClaheConfig(clipLimit = 1.0))
+        val histogramEqualization = AdaptiveHistogramEqualization(ClaheParameters(clipLimit = 1.0))
 
         val actual = histogramEqualization.execute(input)
 

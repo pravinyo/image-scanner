@@ -21,7 +21,7 @@ internal class SaturationCorrectionTest {
         val input = ImageUtils.loadImage("input/dark_img.png")
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGR2GRAY)
         ImageUtils.saveImage("contrastenhancement/saturation_1.jpeg", input)
-        val saturationCorrection = SaturationCorrection(SaturationCorrectionConfig(3.0, 10.0))
+        val saturationCorrection = SaturationCorrection(SaturationCorrectionParameters(3.0, 10.0))
 
         val actual = saturationCorrection.execute(input)
 
@@ -33,7 +33,7 @@ internal class SaturationCorrectionTest {
     @Test
     fun `given color image, it should be able to saturate image`() {
         val input = ImageUtils.loadImage("input/dark_img.png")
-        val saturationCorrection = SaturationCorrection(SaturationCorrectionConfig(3.0, 10.0))
+        val saturationCorrection = SaturationCorrection(SaturationCorrectionParameters(3.0, 10.0))
 
         val actual = saturationCorrection.execute(input)
 

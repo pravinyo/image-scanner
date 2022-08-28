@@ -1,37 +1,35 @@
 package filters
 
+import ImageUtils
 import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.Scalar
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 
-class UnsharpMaskBoostFilter(private var config: UnsharpMaskConfig) : Filter {
+class UnsharpMaskBoostFilter(private var parameters: UnsharpMaskParameters) : Filter {
 
     override fun convert(colorImage: Mat): Mat {
-        val yuvImage = Mat()
-        Imgproc.cvtColor(colorImage, yuvImage, Imgproc.COLOR_BGR2YUV)
+        val channelsAndyComponent = ImageUtils.getYComponentFromColorImage(colorImage)
+        val yChannel = channelsAndyComponent.second
 
-        val channels = mutableListOf<Mat>()
-        Core.split(yuvImage, channels)
-
-        val yChannel = channels[0]
         val blurYChannel = createBlur(yChannel)
         val mask = createMask(yChannel, blurYChannel)
-        val boostMask = boostMask(mask, config.boostAmount)
+        val boostMask = boostMask(mask, parameters.boostAmount)
 
         val yChannelFinal = Mat()
         Core.add(yChannel, boostMask, yChannelFinal)
 
-        val output = merge(channels, yChannelFinal)
-        Imgproc.cvtColor(output, output, Imgproc.COLOR_YUV2BGR)
-        return output
+        return ImageUtils.mergeYComponentReturnColorImage(
+            channels = channelsAndyComponent.first.toMutableList(),
+            yComponent = yChannelFinal
+        )
     }
 
     private fun createBlur(image: Mat): Mat {
         val output = Mat()
-        val kSize = config.kernelSize
-        val sigma = config.sigma
+        val kSize = parameters.kernelSize
+        val sigma = parameters.sigma
         Imgproc.GaussianBlur(image, output, Size(kSize, kSize), sigma, sigma, Core.BORDER_DEFAULT)
         return output
     }
@@ -48,18 +46,9 @@ class UnsharpMaskBoostFilter(private var config: UnsharpMaskConfig) : Filter {
         Core.multiply(mask, times, output)
         return output
     }
-
-    private fun merge(channels: MutableList<Mat>, yChannel: Mat): Mat {
-        channels.removeAt(0)
-        channels.add(0, yChannel)
-
-        val output = Mat()
-        Core.merge(channels, output)
-        return output
-    }
 }
 
-data class UnsharpMaskConfig(
+data class UnsharpMaskParameters(
     val kernelSize: Double,
     val sigma: Double,
     val boostAmount: Double

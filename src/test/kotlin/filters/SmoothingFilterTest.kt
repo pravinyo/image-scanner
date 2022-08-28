@@ -1,5 +1,6 @@
 package filters
 
+import filters.SmoothingFilterParameters.*
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -11,8 +12,6 @@ import utility.ImageUtils
 
 internal class SmoothingFilterTest {
 
-    val smoothingFilter = SmoothingFilter()
-
     @BeforeEach
     fun setUp() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME)
@@ -22,6 +21,13 @@ internal class SmoothingFilterTest {
     fun `given noisy color image, it should be able to smooth the image`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
         val unExpectedImage = input.clone()
+        val smoothingFilter = SmoothingFilter(
+            WholeImageDetails(
+                pixelNeighborDiameter = 9,
+                sigmaColor = 75.0,
+                sigmaSpace = 75.0
+            )
+        )
 
         val actual = smoothingFilter.convert(input)
 
@@ -33,8 +39,15 @@ internal class SmoothingFilterTest {
         val input = ImageUtils.loadImage("input/sample.jpeg")
         val regionToSmooth = Rect(input.rows().times(0.8f).toInt(), 100, 200, 200)
         val regionNotToSmooth = Rect(input.rows() / 2, 300, 200, 200)
+        val smoothingFilter = SmoothingFilter(
+            PartialImageDetails(
+                regionToSmooth = regionToSmooth,
+                kernelSize = 21,
+                sigmaX = 10.0,
+                sigmaY = 10.0
+            )
+        )
 
-        smoothingFilter.setRegion(regionToSmooth)
         val actual = smoothingFilter.convert(input)
 
         assertTrue(areEqual(input.submat(regionNotToSmooth), actual.submat(regionNotToSmooth)))

@@ -13,7 +13,6 @@ import utility.AssertionsUtil
 import utility.ImageUtils
 
 class SharpeningFilterTest {
-    val sharpeningFilter = SharpeningFilter()
 
     @BeforeEach
     fun setUp() {
@@ -24,6 +23,7 @@ class SharpeningFilterTest {
     fun `given noisy color image, it should be able to remove noise and return image`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
         val unExpectedImage = input.clone()
+        val sharpeningFilter = SharpeningFilter(SharpeningFilterParameters())
 
         val actual = sharpeningFilter.convert(input)
 

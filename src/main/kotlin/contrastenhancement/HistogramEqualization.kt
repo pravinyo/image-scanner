@@ -1,6 +1,7 @@
 package contrastenhancement
 
-import org.opencv.core.Core
+
+import ImageUtils
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 
@@ -13,7 +14,10 @@ class HistogramEqualization : ContractEnhancement {
             val yEqualize = Mat()
 
             Imgproc.equalizeHist(channelsAndyComponent.second, yEqualize)
-            output = ImageUtils.mergeYComponentReturnColorImage(channelsAndyComponent.first.toMutableList(), yEqualize)
+            output = ImageUtils.mergeYComponentReturnColorImage(
+                channels = channelsAndyComponent.first.toMutableList(),
+                yComponent = yEqualize
+            )
         } else {
             Imgproc.equalizeHist(image, output)
         }

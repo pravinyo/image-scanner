@@ -1,47 +1,51 @@
 package filters
 
+import ImageUtils
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 
-class SharpeningFilter : Filter {
+class SharpeningFilter(
+    private val parameters: SharpeningFilterParameters
+) : Filter {
 
-     override fun convert(colorImage: Mat): Mat {
-        val yuvImage = getImageInYUV(colorImage)
+    override fun convert(colorImage: Mat): Mat {
+        val channelsAndyComponent = ImageUtils.getYComponentFromColorImage(colorImage)
+        val yChannel = channelsAndyComponent.second
 
-        val channels = mutableListOf<Mat>()
-        Core.split(yuvImage, channels)
-        val yChannel = channels[0]
         val ySharp = performSharpening(yChannel)
 
-        val output = Mat()
-        channels.removeAt(0)
-        channels.add(0, ySharp)
-        Core.merge(channels, output)
-        Imgproc.cvtColor(output, output, Imgproc.COLOR_YUV2BGR)
-        return output
+        return ImageUtils.mergeYComponentReturnColorImage(
+            channels = channelsAndyComponent.first.toMutableList(),
+            yComponent = ySharp
+        )
     }
 
-   private fun getImageInYUV(colorImage: Mat): Mat {
-      val yuvImage = Mat()
-      Imgproc.cvtColor(colorImage, yuvImage, Imgproc.COLOR_BGR2YUV)
-      return yuvImage
-   }
+    private fun performSharpening(image: Mat): Mat {
+        val blurImage = Mat()
+        val kSize = parameters.blurKernelSize.toDouble()
+        val sigma = parameters.sigma
+        Imgproc.GaussianBlur(image, blurImage, Size(kSize, kSize), sigma, sigma, Core.BORDER_DEFAULT)
 
-   private fun performSharpening( image: Mat): Mat {
-      val blurImage = Mat()
-      val kSize = 3.0
-      val sigma = 0.0
-      Imgproc.GaussianBlur(image, blurImage, Size(kSize,kSize), sigma, sigma, Core.BORDER_DEFAULT)
+        val noisyLayer = Mat()
+        Imgproc.Laplacian(blurImage, noisyLayer, CvType.CV_8U, parameters.noiseKernelSize)
 
-      val noisyLayer = Mat()
-      Imgproc.Laplacian(blurImage, noisyLayer, CvType.CV_8U, 3)
+        val sharpImage = Mat(blurImage.size(), blurImage.type())
+        Core.subtract(blurImage, noisyLayer, sharpImage)
 
-      val sharpImage = Mat(blurImage.size(), blurImage.type())
-      Core.subtract(blurImage, noisyLayer, sharpImage)
+        return sharpImage
+    }
+}
 
-      return sharpImage
-   }
+data class SharpeningFilterParameters(
+    val blurKernelSize: Int = 3,
+    val noiseKernelSize: Int = 3,
+    val sigma: Double = 0.0,
+    val borderType: Int = DEFAULT_BORDER_TYPE
+) {
+    init {
+        require(blurKernelSize % 2 == 1) { " kernel size need to be odd value " }
+    }
 }

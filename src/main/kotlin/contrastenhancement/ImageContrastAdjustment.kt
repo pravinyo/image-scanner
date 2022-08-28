@@ -1,11 +1,12 @@
 package contrastenhancement
 
+import ImageUtils
 import org.opencv.core.Mat
 import kotlin.math.max
 import kotlin.math.min
 
 class ImageContrastAdjustment(
-    val config: ImageContrastAdjustConfig
+    val parameters: ImageContrastAdjustParameters
 ) : ContractEnhancement {
     override fun execute(image: Mat): Mat {
         checkImageChannels(image)
@@ -14,7 +15,7 @@ class ImageContrastAdjustment(
         var input = image.clone()
         var channelsAndyComponent: Pair<List<Mat>, Mat> = Pair(emptyList(), Mat())
 
-        if(isColorImage(image)) {
+        if (isColorImage(image)) {
             channelsAndyComponent = ImageUtils.getYComponentFromColorImage(image)
             input = channelsAndyComponent.second
         }
@@ -22,7 +23,7 @@ class ImageContrastAdjustment(
         val inputBound: Pair<Int, Int> = getInputBound(input, cumulativeHistogram)
 
         //stretching
-        val scale = (config.outputBound.second - config.outputBound.first)
+        val scale = (parameters.outputBound.second - parameters.outputBound.first)
             .toFloat().div(inputBound.second - inputBound.first)
 
         //transformation
@@ -41,15 +42,18 @@ class ImageContrastAdjustment(
             }
         }
 
-        if(isColorImage(image)) {
-            output = ImageUtils.mergeYComponentReturnColorImage(channelsAndyComponent.first.toMutableList(),output)
+        if (isColorImage(image)) {
+            output = ImageUtils.mergeYComponentReturnColorImage(
+                channels = channelsAndyComponent.first.toMutableList(),
+                yComponent = output
+            )
         }
 
         return output
     }
 
     private fun isSaturationValid(): Boolean {
-        return config.saturationPercentage > 0
+        return parameters.saturationPercentage > 0
     }
 
     private fun isColorImage(image: Mat): Boolean {
@@ -67,19 +71,21 @@ class ImageContrastAdjustment(
         lowerBound: Int,
         scale: Float,
     ): Int {
-        val outputBound = config.outputBound
+        val outputBound = parameters.outputBound
         val difference = max(0, intensityValue - lowerBound)
         return min((difference.times(scale) + 0.5f).toInt() + outputBound.first, outputBound.second)
     }
 
     private fun getInputBound(image: Mat, cumulativeHistogram: IntArray): Pair<Int, Int> {
         val total = image.rows() * image.cols()
-        val saturation = max(0, min(config.saturationPercentage, 100))
+        val saturation = max(0, min(parameters.saturationPercentage, 100))
         val lowerPercentile = total * saturation / 100
         val upperPercentile = total * (100 - saturation) / 100
 
-        val lowerBoundIntensityValue = max(config.inputBound?.first ?: Int.MIN_VALUE, cumulativeHistogram.binarySearch(lowerPercentile))
-        val upperBoundIntensityValue = min(config.inputBound?.second ?: Int.MAX_VALUE, cumulativeHistogram.binarySearch(upperPercentile))
+        val lowerBoundIntensityValue =
+            max(parameters.inputBound?.first ?: Int.MIN_VALUE, cumulativeHistogram.binarySearch(lowerPercentile))
+        val upperBoundIntensityValue =
+            min(parameters.inputBound?.second ?: Int.MAX_VALUE, cumulativeHistogram.binarySearch(upperPercentile))
 
         val inputLowerBoundFinal =
             if (lowerBoundIntensityValue < 0) -lowerBoundIntensityValue else lowerBoundIntensityValue

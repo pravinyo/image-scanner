@@ -21,7 +21,7 @@ class ImageContrastAdjustmentTest {
          Imgproc.cvtColor(input, input, Imgproc.COLOR_BGR2GRAY)
          ImageUtils.saveImage("contrastenhancement/imadjust_1.jpg", input)
 
-         val imageContrastAdjustment = ImageContrastAdjustment(ImageContrastAdjustConfig())
+         val imageContrastAdjustment = ImageContrastAdjustment(ImageContrastAdjustParameters())
 
          val actual = imageContrastAdjustment.execute(input)
 
@@ -45,7 +45,7 @@ class ImageContrastAdjustmentTest {
         val stdDev = stdDevMat.get(0, 0)[0].toInt()
         val n = 2
 
-        val config = ImageContrastAdjustConfig(
+        val config = ImageContrastAdjustParameters(
             inputBound = Pair(mean - n * stdDev, mean + n * stdDev),
             outputBound = Pair(100, 250)
         )
@@ -62,24 +62,24 @@ class ImageContrastAdjustmentTest {
     @Test
     fun `given color image, it should be able to adjust contrast`() {
         val input = ImageUtils.loadImage("input/low_contrast.png")
-        val configs = mutableListOf<ImageContrastAdjustConfig>()
-        configs.add(ImageContrastAdjustConfig())
-        configs.add(ImageContrastAdjustConfig(
+        val configs = mutableListOf<ImageContrastAdjustParameters>()
+        configs.add(ImageContrastAdjustParameters())
+        configs.add(ImageContrastAdjustParameters(
             saturationPercentage = 2
         ))
-        configs.add(ImageContrastAdjustConfig(
+        configs.add(ImageContrastAdjustParameters(
             saturationPercentage = 2,
             inputBound = Pair(50, 200)
         ))
-        configs.add(ImageContrastAdjustConfig(
+        configs.add(ImageContrastAdjustParameters(
             saturationPercentage = 2,
             inputBound = Pair(70, 200)
         ))
-        configs.add(ImageContrastAdjustConfig(
+        configs.add(ImageContrastAdjustParameters(
             saturationPercentage = 2,
             inputBound = Pair(70, 150)
         ))
-        configs.add(ImageContrastAdjustConfig(
+        configs.add(ImageContrastAdjustParameters(
             saturationPercentage = 2,
             inputBound = Pair(70, 150),
             outputBound = Pair(50, 200)

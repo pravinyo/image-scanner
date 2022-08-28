@@ -1,21 +1,25 @@
 package contrastenhancement
 
-import org.opencv.core.Core
+import ImageUtils
 import org.opencv.core.Mat
+import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 
 class AdaptiveHistogramEqualization(
-    private val config: ClaheConfig
+    private val parameters: ClaheParameters
 ) : ContractEnhancement {
     override fun execute(image: Mat): Mat {
         var output = Mat()
-        val clahe = Imgproc.createCLAHE(config.clipLimit, config.tileGridSize)
+        val clahe = Imgproc.createCLAHE(parameters.clipLimit, parameters.tileGridSize)
 
         if (isColorImage(image.channels())) {
             val channelsAndyComponent = ImageUtils.getYComponentFromColorImage(image)
             val yEqualize = Mat()
             clahe.apply(channelsAndyComponent.second, yEqualize)
-            output = ImageUtils.mergeYComponentReturnColorImage(channelsAndyComponent.first.toMutableList(), yEqualize)
+            output = ImageUtils.mergeYComponentReturnColorImage(
+                channels = channelsAndyComponent.first.toMutableList(),
+                yComponent = yEqualize
+            )
         } else {
             clahe.apply(image, output)
         }
@@ -27,3 +31,8 @@ class AdaptiveHistogramEqualization(
         return channels > 1
     }
 }
+
+data class ClaheParameters(
+    val clipLimit: Double = 40.0,
+    val tileGridSize: Size = Size(8.0, 8.0)
+)

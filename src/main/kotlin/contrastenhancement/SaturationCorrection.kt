@@ -3,12 +3,19 @@ package contrastenhancement
 import org.opencv.core.Mat
 
 class SaturationCorrection(
-    private val config: SaturationCorrectionConfig
+    private val parameters: SaturationCorrectionParameters
 ) : ContractEnhancement {
 
     override fun execute(image: Mat): Mat {
         val outputImage = Mat()
-        image.convertTo(outputImage, config.matrixOutputType, config.alpha, config.beta)
+        image.convertTo(outputImage, parameters.matrixOutputType, parameters.alpha, parameters.beta)
         return outputImage
     }
 }
+
+const val sameAsInputType = -1
+data class SaturationCorrectionParameters(
+    val alpha: Double,
+    val beta: Double,
+    val matrixOutputType: Int = sameAsInputType
+)

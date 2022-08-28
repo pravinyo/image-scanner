@@ -10,8 +10,6 @@ import utility.ImageUtils
 
 class BlackAndWhiteFilterTest {
 
-    val blackAndWhiteFilter = BlackAndWhiteFilter()
-
     @BeforeEach
     fun setUp() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME)
@@ -20,6 +18,7 @@ class BlackAndWhiteFilterTest {
     @Test
     fun `given color image, it should be able to convert to black and white type`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
+        val blackAndWhiteFilter = BlackAndWhiteFilter(BlackAndWhiteFilterParameters())
 
         val actual = blackAndWhiteFilter.convert(input)
 

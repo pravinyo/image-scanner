@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
-import org.opencv.core.Size
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils
 
@@ -19,7 +18,7 @@ internal class TranslationTransformationTest {
     @Test
     fun `given color image, It should be able to shift by 100px in x- and 50px in y- direction 2`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val config = TranslationTransformationConfig(
+        val config = TranslationTransformParameters(
             shiftInXDirection = 100.0,
             shiftInYDirection = 50.0
         )
@@ -36,7 +35,7 @@ internal class TranslationTransformationTest {
     @Test
     fun `given color image, It should be able to shift by -100px in x- and -50px in y- direction 2`() {
         val input = ImageUtils.loadImage("input/sample.jpeg")
-        val config = TranslationTransformationConfig(
+        val config = TranslationTransformParameters(
             shiftInXDirection = -100.0,
             shiftInYDirection = -50.0
         )

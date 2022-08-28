@@ -5,16 +5,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
-import org.opencv.core.Mat
-import org.opencv.core.Scalar
-import org.opencv.core.Size
-import org.opencv.imgproc.Imgproc
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils
 
 class UnsharpMaskBoostFilterTest {
 
-    val config = UnsharpMaskConfig(kernelSize = 21.0, sigma = 3.0, boostAmount = 1.5)
+    val config = UnsharpMaskParameters(kernelSize = 21.0, sigma = 3.0, boostAmount = 1.5)
     val unsharpMaskBoostFilter = UnsharpMaskBoostFilter(config)
 
     @BeforeEach

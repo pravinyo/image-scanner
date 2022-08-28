@@ -1,32 +1,42 @@
 package filters
 
+import contrastenhancement.AdaptiveHistogramEqualization
+import contrastenhancement.ClaheParameters
 import org.opencv.core.Mat
-import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 
-class BlackAndWhiteFilter : Filter {
+class BlackAndWhiteFilter(
+    private val parameters: BlackAndWhiteFilterParameters
+) : Filter {
 
     override fun convert(colorImage: Mat): Mat {
         val output = Mat()
-
-        val grayScape = convertToGrayscale(colorImage)
-        val normalizeGrayScaleImage = adaptiveHistogramEqualization(grayScape)
-        Imgproc.threshold(normalizeGrayScaleImage, output, 128.0, 255.0, Imgproc.THRESH_OTSU)
-
+        val grayImage = convertToGrayscale(colorImage)
+        val normalizeGrayScaleImage = adjustContrast(grayImage)
+        Imgproc.threshold(
+            normalizeGrayScaleImage,
+            output,
+            parameters.threshold,
+            parameters.maxIntensityValue,
+            Imgproc.THRESH_OTSU
+        )
         return output
     }
 
     private fun convertToGrayscale(input: Mat): Mat {
-        val grayScape = Mat()
-        Imgproc.cvtColor(input, grayScape, Imgproc.COLOR_BGR2GRAY)
-        return grayScape
+        val filter = GrayscaleFilter() //TODO: smell
+        return filter.convert(input)
     }
 
-    private fun adaptiveHistogramEqualization(grayScape: Mat): Mat{
-        val normalizeGrayScaleImage = Mat()
-        val clahe = Imgproc.createCLAHE(2.0, Size(8.0, 8.0))
-        clahe.apply(grayScape, normalizeGrayScaleImage)
-        return normalizeGrayScaleImage
+    private fun adjustContrast(grayImage: Mat): Mat {
+        val claheParameters = ClaheParameters(clipLimit = 2.0)
+        val contrastAdjustment = AdaptiveHistogramEqualization(claheParameters) //TODO: Smell
+        return contrastAdjustment.execute(grayImage)
     }
-
 }
+
+data class BlackAndWhiteFilterParameters(
+    val threshold: Double = 128.0,
+    val maxIntensityValue: Double = 255.0
+)
+

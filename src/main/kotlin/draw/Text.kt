@@ -4,7 +4,7 @@ import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import transformations.PerspectiveTransformation
 import transformations.RotationTransformation
-import transformations.RotationTransformationConfig.ArbitraryDirectionConfig
+import transformations.RotationTransformParameters.ArbitraryDirection
 
 class Text(
     private val parameters: TextParameters
@@ -35,11 +35,11 @@ class Text(
         addRectangle(intermediateImage, bestPosition, textSize)
         addTextTo(intermediateImage, bestPosition)
 
-        val rotationConfig = ArbitraryDirectionConfig(
+        val rotationTransformParameters = ArbitraryDirection(
             angle = angle,
             center = Point(bestPosition.x + textSize.width / 2, bestPosition.y + textSize.height / 2)
         )
-        val rotatedTextImage = RotationTransformation(rotationConfig).execute(intermediateImage)
+        val rotatedTextImage = RotationTransformation(rotationTransformParameters).execute(intermediateImage)
 
         return image.copyAndOverrideWith(rotatedTextImage)
     }
