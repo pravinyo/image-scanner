@@ -1,8 +1,9 @@
 import org.opencv.core.Mat
 
 class ImageEditor(
-    val image : Mat,
-    private val stateManager: StateManager
+    val image: Mat,
+    private val stateManager: StateManager,
+    private val backupManager: BackupManager
 ) {
 
     init {
@@ -23,5 +24,9 @@ class ImageEditor(
 
     fun createSnapshot(): Snapshot {
         return Snapshot(stateManager.getOperationsInfo(), stateManager.getActiveImage(), this)
+    }
+
+    fun takeCommand() {
+        backupManager.add(createSnapshot())
     }
 }
