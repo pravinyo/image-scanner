@@ -9,7 +9,13 @@ class ImageEditor(
         stateManager.initialize(image)
     }
 
-    fun activeImage(): Mat {
+    fun getActiveImage(): Mat {
         return stateManager.getActiveImage()
     }
+
+    fun setActiveImage(newActiveImage: Mat) {
+        stateManager.setActiveImage(newActiveImage)
+    }
+
+
 }
