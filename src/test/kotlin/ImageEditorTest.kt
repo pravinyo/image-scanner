@@ -1,6 +1,7 @@
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -55,5 +56,22 @@ class ImageEditorTest {
         verify(exactly = 1) {
             stateManager.resetOperationsInfo(operationList)
         }
+    }
+
+    @Test
+    fun `it should be able to create snapshot of current state`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = mockk<StateManager>(relaxed = true)
+        val imageEditor = ImageEditor(input, stateManager)
+
+        every{ stateManager.initialize(any()) } returns Unit
+        every{ stateManager.getOperationsInfo() } returns emptyList()
+        every{ stateManager.getActiveImage() } returns input.clone()
+        val expectedSnapshot = Snapshot(emptyList(), input, imageEditor)
+
+        val actualSnapshot = imageEditor.createSnapshot()
+
+        assertEquals(expectedSnapshot.getOperations(), actualSnapshot.getOperations())
+        assertTrue(areEqual(expectedSnapshot.activeImage(), actualSnapshot.activeImage()))
     }
 }

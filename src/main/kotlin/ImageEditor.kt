@@ -20,4 +20,8 @@ class ImageEditor(
     fun resetOperationList(operationList: List<String>) {
         stateManager.resetOperationsInfo(operationList)
     }
+
+    fun createSnapshot(): Snapshot {
+        return Snapshot(stateManager.getOperationsInfo(), stateManager.getActiveImage(), this)
+    }
 }
