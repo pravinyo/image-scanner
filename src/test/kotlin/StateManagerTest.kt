@@ -35,4 +35,27 @@ internal class StateManagerTest {
 
         assertTrue(AssertionsUtil.areEqual(input, actualImage))
     }
+
+    @Test
+    fun `when initialized, operations list should be empty`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = StateManager()
+
+        stateManager.initialize(input)
+        val actualOperations = stateManager.getOperationsInfo()
+
+        assertEquals(emptyList<List<String>>(), actualOperations)
+    }
+
+    @Test
+    fun `it should store operation performed on image`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = StateManager()
+        stateManager.initialize(input)
+
+        stateManager.appendOperationInfo("RotationOperation")
+        val actualOperations = stateManager.getOperationsInfo()
+
+        assertNotEquals(emptyList<List<String>>(), actualOperations)
+    }
 }
