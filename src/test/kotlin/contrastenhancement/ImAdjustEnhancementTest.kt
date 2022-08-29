@@ -9,7 +9,7 @@ import org.opencv.core.MatOfDouble
 import org.opencv.imgproc.Imgproc
 import utility.ImageUtils
 
-class ImageContrastAdjustmentTest {
+class ImAdjustEnhancementTest {
      @BeforeEach
      fun setUp() {
          System.loadLibrary(Core.NATIVE_LIBRARY_NAME)
