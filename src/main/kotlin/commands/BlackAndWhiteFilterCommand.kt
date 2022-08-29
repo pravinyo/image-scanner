@@ -2,11 +2,12 @@ package commands
 
 import editor.ImageEditor
 import OperationType
-import filters.BlackAndWhiteFilter
+import factory.FilterFactory
 import filters.BlackAndWhiteFilterParameters
 
 class BlackAndWhiteFilterCommand(
     val imageEditor: ImageEditor,
+    private val filterFactory: FilterFactory,
     val parameters: BlackAndWhiteFilterParameters
 ) : Command {
     override fun operationType(): OperationType {
@@ -14,8 +15,8 @@ class BlackAndWhiteFilterCommand(
     }
 
     override fun execute() {
-        val filter = BlackAndWhiteFilter(parameters)
-        val newImage = filter.convert(imageEditor.getActiveImage())
+        val blackAndWhiteFilter = filterFactory.createInstance(operationType())
+        val newImage = blackAndWhiteFilter.convert(imageEditor.getActiveImage())
         imageEditor.setActiveImage(newImage)
     }
 }

@@ -1,6 +1,8 @@
 package commands
 
 import editor.ImageEditor
+import factory.FilterFactory
+import filters.BlackAndWhiteFilter
 import filters.BlackAndWhiteFilterParameters
 import io.mockk.every
 import io.mockk.justRun
@@ -23,14 +25,19 @@ class BlackAndWhiteFilterCommandTest {
         val image = ImageUtils.loadImage("input/sample.jpeg")
         val imageEditor = mockk<ImageEditor>()
         val parameters = BlackAndWhiteFilterParameters()
-        val backAndWhiteCommand = BlackAndWhiteFilterCommand(imageEditor, parameters)
+        val filterFactory = mockk<FilterFactory>()
+        val blackAndWhiteFilter = mockk<BlackAndWhiteFilter>()
+        val backAndWhiteCommand = BlackAndWhiteFilterCommand(imageEditor, filterFactory, parameters)
 
         every { imageEditor.getActiveImage() } returns image
         justRun { imageEditor.setActiveImage(any()) }
+        every { filterFactory.createInstance(any()) } returns blackAndWhiteFilter
+        every { blackAndWhiteFilter.convert(any()) } returns image.clone()
 
         backAndWhiteCommand.execute()
 
-        verify {
+        verify(exactly = 1) {
+            blackAndWhiteFilter.convert(image)
             imageEditor.setActiveImage(any())
         }
     }
@@ -39,7 +46,8 @@ class BlackAndWhiteFilterCommandTest {
     fun `it should return black and white filter operation type`() {
         val imageEditor = mockk<ImageEditor>()
         val parameters = BlackAndWhiteFilterParameters()
-        val blackAndWhiteFilterCommand = BlackAndWhiteFilterCommand(imageEditor, parameters)
+        val filterFactory = mockk<FilterFactory>()
+        val blackAndWhiteFilterCommand = BlackAndWhiteFilterCommand(imageEditor, filterFactory, parameters)
         val expectedOperation = OperationType.BlackAndWhiteFilter(parameters)
 
         val actualOperation = blackAndWhiteFilterCommand.operationType()

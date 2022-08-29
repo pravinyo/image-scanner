@@ -3,6 +3,8 @@ import commands.RotateCommand
 import editor.BackupManager
 import editor.ImageEditor
 import editor.StateManager
+import factory.FilterFactory
+import factory.TransformationFactory
 import filters.BlackAndWhiteFilterParameters
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -21,6 +23,9 @@ object Start {
         val path = File("src/main/resources").absolutePath
         val image = imread("$path/images/sample.png")
 
+        val transformationFactory = TransformationFactory()
+        val filterFactory = FilterFactory()
+
         val stateManager = StateManager()
         val backupManager = BackupManager()
         val imageEditor = ImageEditor(
@@ -31,15 +36,18 @@ object Start {
 
         val rotationCommand1 = RotateCommand(
             imageEditor,
+            transformationFactory,
             RotationTransformParameters.FixedDirection(FixedRotationDirection.DIRECTION_180)
         )
         val rotationCommand2 = RotateCommand(
             imageEditor,
+            transformationFactory,
             RotationTransformParameters.ArbitraryDirection(30.0)
         )
 
         val blackAndWhiteFilterCommand = BlackAndWhiteFilterCommand(
             imageEditor,
+            filterFactory,
             BlackAndWhiteFilterParameters()
         )
 
