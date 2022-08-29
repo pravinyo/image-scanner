@@ -28,6 +28,7 @@ class ImageEditor(
     }
 
     fun takeCommand(command: Command) {
+        stateManager.appendOperationInfo(command.operationType())
         backupManager.add(createSnapshot())
         command.execute()
     }

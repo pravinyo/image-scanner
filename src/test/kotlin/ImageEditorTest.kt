@@ -146,4 +146,27 @@ class ImageEditorTest {
             command.execute()
         }
     }
+
+    @Test
+    fun `it should be save command details that changed the image state`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = mockk<StateManager>(relaxed = true)
+        val backupManager = mockk<BackupManager>()
+        val imageEditor = ImageEditor(input, stateManager, backupManager)
+        val command = mockk<Command>()
+
+        val rotationCommand = OperationType.RotationTransform(
+            FixedDirection(DIRECTION_CLOCKWISE_90)
+        )
+        justRun { stateManager.initialize(any()) }
+        justRun { backupManager.add(any()) }
+        justRun { command.execute() }
+        every { command.operationType() } returns rotationCommand.copy()
+
+        imageEditor.takeCommand(command)
+
+        verify(exactly = 1) {
+            stateManager.appendOperationInfo(rotationCommand)
+        }
+    }
 }
