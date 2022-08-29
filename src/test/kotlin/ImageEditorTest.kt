@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
+import transformations.FixedRotationDirection.DIRECTION_180
 import transformations.FixedRotationDirection.DIRECTION_CLOCKWISE_90
+import transformations.RotationTransformParameters
 import transformations.RotationTransformParameters.FixedDirection
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils
@@ -95,6 +97,9 @@ class ImageEditorTest {
         every { stateManager.getOperationsInfo() } returns emptyList()
         every { stateManager.getActiveImage() } returns input.clone()
         justRun { command.execute() }
+        every { command.operationType() } returns OperationType.RotationTransform(
+            FixedDirection(DIRECTION_180)
+        )
 
         val snapshotSlot = slot<Snapshot>()
         every { backupManager.add(capture(snapshotSlot)) } returns Unit
@@ -139,6 +144,9 @@ class ImageEditorTest {
         justRun { stateManager.initialize(any()) }
         justRun { backupManager.add(any()) }
         justRun { command.execute() }
+        every { command.operationType() } returns OperationType.RotationTransform(
+            FixedDirection(DIRECTION_180)
+        )
 
         imageEditor.takeCommand(command)
 
