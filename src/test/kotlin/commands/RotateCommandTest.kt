@@ -1,6 +1,6 @@
 package commands
 
-import ImageEditor
+import editor.ImageEditor
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk

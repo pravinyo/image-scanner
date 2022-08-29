@@ -1,3 +1,6 @@
+import editor.BackupManager
+import editor.ImageEditor
+import editor.Snapshot
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.spyk
@@ -7,9 +10,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
-import transformations.FixedRotationDirection
 import transformations.FixedRotationDirection.*
-import transformations.RotationTransformParameters
 import transformations.RotationTransformParameters.*
 
 class BackupManagerTest {

@@ -1,5 +1,8 @@
 import commands.BlackAndWhiteFilterCommand
 import commands.RotateCommand
+import editor.BackupManager
+import editor.ImageEditor
+import editor.StateManager
 import filters.BlackAndWhiteFilterParameters
 import org.opencv.core.Core
 import org.opencv.core.Mat

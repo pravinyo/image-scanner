@@ -1,3 +1,6 @@
+package editor
+
+import OperationType
 import org.opencv.core.Mat
 
 class Snapshot(

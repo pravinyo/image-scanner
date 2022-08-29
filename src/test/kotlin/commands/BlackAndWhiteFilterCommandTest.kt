@@ -1,6 +1,6 @@
 package commands
 
-import ImageEditor
+import editor.ImageEditor
 import filters.BlackAndWhiteFilterParameters
 import io.mockk.every
 import io.mockk.justRun

@@ -1,12 +1,11 @@
+import editor.StateManager
 import org.junit.jupiter.api.BeforeEach
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
-import transformations.FixedRotationDirection
 import transformations.FixedRotationDirection.*
-import transformations.RotationTransformParameters
 import transformations.RotationTransformParameters.*
 import utility.AssertionsUtil
 import utility.ImageUtils

@@ -1,6 +1,6 @@
 package commands
 
-import ImageEditor
+import editor.ImageEditor
 import OperationType
 import filters.BlackAndWhiteFilter
 import filters.BlackAndWhiteFilterParameters

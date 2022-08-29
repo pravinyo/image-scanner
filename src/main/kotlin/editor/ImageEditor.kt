@@ -1,3 +1,6 @@
+package editor
+
+import OperationType
 import commands.Command
 import org.opencv.core.Mat
 

@@ -1,4 +1,8 @@
 import commands.Command
+import editor.BackupManager
+import editor.ImageEditor
+import editor.Snapshot
+import editor.StateManager
 import io.mockk.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -7,7 +11,6 @@ import org.opencv.core.Core
 import org.opencv.core.Mat
 import transformations.FixedRotationDirection.DIRECTION_180
 import transformations.FixedRotationDirection.DIRECTION_CLOCKWISE_90
-import transformations.RotationTransformParameters
 import transformations.RotationTransformParameters.FixedDirection
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils

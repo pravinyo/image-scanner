@@ -1,3 +1,5 @@
+import editor.ImageEditor
+import editor.Snapshot
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
