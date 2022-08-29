@@ -3,7 +3,7 @@ package contrastenhancement
 import org.opencv.core.Mat
 import kotlin.math.pow
 
-class GammaCorrection(private val gamma: Double) : ContractEnhancement{
+class GammaCorrection(private val gamma: Double) : ContrastEnhancement{
     override fun execute(image: Mat): Mat {
         val transform = DoubleArray(256) {
             index -> (index/255.0).pow(gamma) * 255.0

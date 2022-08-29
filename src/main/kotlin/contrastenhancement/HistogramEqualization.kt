@@ -5,7 +5,7 @@ import ImageUtils
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 
-class HistogramEqualization : ContractEnhancement {
+class HistogramEqualization : ContrastEnhancement {
     override fun execute(image: Mat): Mat {
         var output = Mat()
 

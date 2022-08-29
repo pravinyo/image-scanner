@@ -7,7 +7,7 @@ import org.opencv.imgproc.Imgproc
 
 class AdaptiveHistogramEqualization(
     private val parameters: ClaheParameters
-) : ContractEnhancement {
+) : ContrastEnhancement {
     override fun execute(image: Mat): Mat {
         var output = Mat()
         val clahe = Imgproc.createCLAHE(parameters.clipLimit, parameters.tileGridSize)

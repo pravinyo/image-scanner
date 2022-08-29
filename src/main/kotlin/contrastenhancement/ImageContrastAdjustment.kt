@@ -7,7 +7,7 @@ import kotlin.math.min
 
 class ImageContrastAdjustment(
     val parameters: ImageContrastAdjustParameters
-) : ContractEnhancement {
+) : ContrastEnhancement {
     override fun execute(image: Mat): Mat {
         checkImageChannels(image)
         if (!isSaturationValid()) return image.clone()

@@ -2,6 +2,6 @@ package contrastenhancement
 
 import org.opencv.core.Mat
 
-interface ContractEnhancement {
+interface ContrastEnhancement {
     fun execute(image: Mat): Mat
 }

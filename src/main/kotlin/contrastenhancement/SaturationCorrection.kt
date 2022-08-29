@@ -4,7 +4,7 @@ import org.opencv.core.Mat
 
 class SaturationCorrection(
     private val parameters: SaturationCorrectionParameters
-) : ContractEnhancement {
+) : ContrastEnhancement {
 
     override fun execute(image: Mat): Mat {
         val outputImage = Mat()
