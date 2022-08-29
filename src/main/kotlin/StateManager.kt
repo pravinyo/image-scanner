@@ -3,7 +3,7 @@ import java.util.*
 
 class StateManager {
     private lateinit var activeImage : Mat
-    private lateinit var operations: Stack<String>
+    private lateinit var operations: Stack<OperationType>
 
     fun initialize(image: Mat) {
         activeImage = image.clone()
@@ -18,15 +18,15 @@ class StateManager {
         return activeImage.clone()
     }
 
-    fun getOperationsInfo(): List<String> {
+    fun getOperationsInfo(): List<OperationType> {
         return operations.toList()
     }
 
-    fun appendOperationInfo(operationType: String) {
+    fun appendOperationInfo(operationType: OperationType) {
         operations.push(operationType)
     }
 
-    fun resetOperationsInfo(operationList: List<String>) {
+    fun resetOperationsInfo(operationList: List<OperationType>) {
         operations.clear()
         operations.addAll(operationList)
     }

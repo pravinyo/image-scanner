@@ -1,7 +1,7 @@
 import org.opencv.core.Mat
 
 class Snapshot(
-    private val operationList: List<String>,
+    private val operationList: List<OperationType>,
     private val activeImage: Mat,
     private val imageEditor: ImageEditor
 ) {

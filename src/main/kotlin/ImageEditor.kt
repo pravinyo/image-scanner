@@ -19,7 +19,7 @@ class ImageEditor(
         stateManager.setActiveImage(newActiveImage)
     }
 
-    fun resetOperationList(operationList: List<String>) {
+    fun resetOperationList(operationList: List<OperationType>) {
         stateManager.resetOperationsInfo(operationList)
     }
 

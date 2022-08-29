@@ -7,6 +7,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
+import transformations.FixedRotationDirection
+import transformations.FixedRotationDirection.*
+import transformations.RotationTransformParameters
+import transformations.RotationTransformParameters.*
 
 class BackupManagerTest {
 
@@ -19,7 +23,7 @@ class BackupManagerTest {
     fun `it should be able to add snapshot`() {
         val image = Mat()
         val imageEditor = mockk<ImageEditor>()
-        val snapshot = Snapshot(listOf("RotateOperation"), image, imageEditor)
+        val snapshot = Snapshot(mockk(), image, imageEditor)
         val backupManager = BackupManager()
 
         backupManager.add(snapshot)
@@ -32,7 +36,10 @@ class BackupManagerTest {
     fun `it should be able to remove last snapshot and run`() {
         val image = Mat()
         val imageEditor = mockk<ImageEditor>()
-        val snapshot = Snapshot(listOf("RotateOperation"), image, imageEditor)
+        val rotationOperation = OperationType.RotationTransform(
+            FixedDirection(DIRECTION_CLOCKWISE_90)
+        )
+        val snapshot = Snapshot(listOf(rotationOperation), image, imageEditor)
         val spySnapshot = spyk(snapshot)
 
         val backupManager = BackupManager()

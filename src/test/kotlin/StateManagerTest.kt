@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
+import transformations.FixedRotationDirection
+import transformations.FixedRotationDirection.*
+import transformations.RotationTransformParameters
+import transformations.RotationTransformParameters.*
 import utility.AssertionsUtil
 import utility.ImageUtils
 
@@ -53,7 +57,10 @@ internal class StateManagerTest {
         val stateManager = StateManager()
         stateManager.initialize(input)
 
-        stateManager.appendOperationInfo("RotationOperation")
+        val rotationOperation = OperationType.RotationTransform(
+            FixedDirection(DIRECTION_CLOCKWISE_90)
+        )
+        stateManager.appendOperationInfo(rotationOperation)
         val actualOperations = stateManager.getOperationsInfo()
 
         assertNotEquals(emptyList<List<String>>(), actualOperations)
@@ -64,8 +71,11 @@ internal class StateManagerTest {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
         val stateManager = StateManager()
         stateManager.initialize(input)
-        stateManager.appendOperationInfo("RotationOperation")
-        val operationList = emptyList<String>()
+        val rotationOperation = OperationType.RotationTransform(
+            FixedDirection(DIRECTION_CLOCKWISE_90)
+        )
+        stateManager.appendOperationInfo(rotationOperation)
+        val operationList = emptyList<OperationType>()
 
 
         stateManager.resetOperationsInfo(operationList)

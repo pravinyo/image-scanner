@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import org.opencv.core.Mat
+import transformations.FixedRotationDirection.DIRECTION_CLOCKWISE_90
+import transformations.RotationTransformParameters.FixedDirection
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils
 
@@ -50,7 +52,11 @@ class ImageEditorTest {
         val imageEditor = ImageEditor(input, stateManager, backupManager)
 
         every { stateManager.initialize(any()) } returns Unit
-        val operationList = listOf("RotationOperation")
+        val operationList = listOf(
+            OperationType.RotationTransform(
+                FixedDirection(DIRECTION_CLOCKWISE_90)
+            )
+        )
 
         imageEditor.resetOperationList(operationList)
 
@@ -109,7 +115,11 @@ class ImageEditorTest {
 
         justRun { stateManager.initialize(any()) }
         every { backupManager.runLastSnapshot() } returns true
-        val operationList = listOf("RotationOperation")
+        val operationList = listOf(
+            OperationType.RotationTransform(
+                FixedDirection(DIRECTION_CLOCKWISE_90)
+            )
+        )
 
         imageEditor.resetOperationList(operationList)
 

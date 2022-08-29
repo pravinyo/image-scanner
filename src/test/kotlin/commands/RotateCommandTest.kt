@@ -5,6 +5,7 @@ import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 
 import org.junit.jupiter.api.Test
@@ -36,5 +37,17 @@ internal class RotateCommandTest {
         verify {
             imageEditor.setActiveImage(any())
         }
+    }
+
+    @Test
+    fun `it should return rotation transform operation type`() {
+        val imageEditor = mockk<ImageEditor>()
+        val parameters = FixedDirection(FixedRotationDirection.DIRECTION_CLOCKWISE_90)
+        val rotateCommand = RotateCommand(imageEditor, parameters)
+        val expectedOperation = OperationType.RotationTransform(parameters)
+
+        val actualOperation = rotateCommand.operationType()
+
+        assertEquals(expectedOperation, actualOperation)
     }
 }
