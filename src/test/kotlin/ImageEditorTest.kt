@@ -1,3 +1,4 @@
+import commands.Command
 import io.mockk.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -82,15 +83,18 @@ class ImageEditorTest {
         val stateManager = mockk<StateManager>(relaxed = true)
         val backupManager = mockk<BackupManager>()
         val imageEditor = ImageEditor(input, stateManager, backupManager)
+        val command = mockk<Command>()
 
-        every { stateManager.initialize(any()) } returns Unit
+        justRun { stateManager.initialize(any()) }
         every { stateManager.getOperationsInfo() } returns emptyList()
         every { stateManager.getActiveImage() } returns input.clone()
+        justRun { command.execute() }
 
         val snapshotSlot = slot<Snapshot>()
         every { backupManager.add(capture(snapshotSlot)) } returns Unit
 
-        imageEditor.takeCommand()
+
+        imageEditor.takeCommand(command)
 
         assertEquals(emptyList<String>(), snapshotSlot.captured.getOperations())
         assertTrue(areEqual(input, snapshotSlot.captured.activeImage()))
@@ -112,5 +116,24 @@ class ImageEditorTest {
         imageEditor.undoChanges()
 
         verify(exactly = 1) { backupManager.runLastSnapshot() }
+    }
+
+    @Test
+    fun `it should be able to execute command`() {
+        val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
+        val stateManager = mockk<StateManager>(relaxed = true)
+        val backupManager = mockk<BackupManager>()
+        val imageEditor = ImageEditor(input, stateManager, backupManager)
+        val command = mockk<Command>()
+
+        justRun { stateManager.initialize(any()) }
+        justRun { backupManager.add(any()) }
+        justRun { command.execute() }
+
+        imageEditor.takeCommand(command)
+
+        verify(exactly = 1) {
+            command.execute()
+        }
     }
 }
