@@ -1,3 +1,4 @@
+import commands.Command
 import org.opencv.core.Mat
 
 class ImageEditor(
@@ -26,8 +27,9 @@ class ImageEditor(
         return Snapshot(stateManager.getOperationsInfo(), stateManager.getActiveImage(), this)
     }
 
-    fun takeCommand() {
+    fun takeCommand(command: Command) {
         backupManager.add(createSnapshot())
+        command.execute()
     }
 
     fun undoChanges() {
