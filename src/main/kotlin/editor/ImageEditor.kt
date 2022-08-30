@@ -5,7 +5,7 @@ import commands.Command
 import org.opencv.core.Mat
 
 class ImageEditor(
-    val image: Mat,
+    image: Mat,
     private val stateManager: StateManager,
     private val backupManager: BackupManager
 ) {
