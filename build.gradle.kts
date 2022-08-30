@@ -9,8 +9,6 @@ plugins {
 
 group = "dev.pravin"
 version = "1.0-SNAPSHOT"
-val githubProperties = Properties()
-githubProperties.load(FileInputStream(rootProject.file("github.properties")))
 
 repositories {
     mavenCentral()
@@ -47,8 +45,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/pravinyo/image-scanner")
             credentials {
-                username = githubProperties["gpr.usr"] as String? ?: System.getenv("GPR_USER")
-                password = githubProperties["gpr.key"] as String? ?: System.getenv("GPR_API_KEY")
+                username = System.getenv("GPR_USER")
+                password = System.getenv("GPR_API_KEY")
             }
         }
     }
