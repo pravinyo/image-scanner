@@ -13,6 +13,9 @@ jobs:
           java-version: 11
           distribution: 'adopt'
           cache: gradle
+      - uses: Dovyski/setup-opencv-action@v1
+        with:
+          opencv-version: '3.4.16'
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - uses: gradle/gradle-build-action@v2

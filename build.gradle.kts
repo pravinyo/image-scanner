@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.*
-
 plugins {
     kotlin("jvm") version "1.7.0"
     java
@@ -14,10 +11,16 @@ repositories {
     mavenCentral()
 }
 
+fun shouldLoadFromLocal(): Boolean {
+    val env = System.getenv("env") ?: "local"
+    return env == "local"
+}
+
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(files("C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/opencv-3416.jar"))
-
+    if (shouldLoadFromLocal()) {
+        implementation(files("C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/opencv-3416.jar"))
+    }
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testImplementation("io.mockk:mockk:1.12.7")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
