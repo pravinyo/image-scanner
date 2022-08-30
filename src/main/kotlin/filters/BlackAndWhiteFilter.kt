@@ -1,11 +1,15 @@
 package filters
 
-import contrastenhancement.AdaptiveHistogramEqualization
+import OperationType
 import contrastenhancement.ClaheParameters
+import factory.ContrastEnhancementFactory
+import factory.FilterFactory
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 
 class BlackAndWhiteFilter(
+    private val filterFactory: FilterFactory,
+    private val contrastEnhancementFactory: ContrastEnhancementFactory,
     private val parameters: BlackAndWhiteFilterParameters
 ) : Filter {
 
@@ -24,13 +28,14 @@ class BlackAndWhiteFilter(
     }
 
     private fun convertToGrayscale(input: Mat): Mat {
-        val filter = GrayscaleFilter() //TODO: smell
+        val filter = filterFactory.createInstance(OperationType.GrayscaleFilter)
         return filter.convert(input)
     }
 
     private fun adjustContrast(grayImage: Mat): Mat {
         val claheParameters = ClaheParameters(clipLimit = 2.0)
-        val contrastAdjustment = AdaptiveHistogramEqualization(claheParameters) //TODO: Smell
+        val histogramOperationType = OperationType.AdaptiveHistogramEnhancement(claheParameters)
+        val contrastAdjustment = contrastEnhancementFactory.createInstance(histogramOperationType)
         return contrastAdjustment.execute(grayImage)
     }
 }

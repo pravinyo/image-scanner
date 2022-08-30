@@ -3,6 +3,7 @@ package factory
 import filters.GrayscaleFilter
 import filters.SmoothingFilter
 import filters.SmoothingFilterParameters
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -10,7 +11,8 @@ class FilterFactoryTest {
 
     @Test
     fun `should return instance of grayscale filter`() {
-        val filterFactory = FilterFactory()
+        val contractEnhancementFactory = mockk<ContrastEnhancementFactory>()
+        val filterFactory = FilterFactory(contractEnhancementFactory)
         val grayscaleOperation = OperationType.GrayscaleFilter
 
         val grayscaleFilter = filterFactory.createInstance(grayscaleOperation)
@@ -20,7 +22,8 @@ class FilterFactoryTest {
 
     @Test
     fun `should return instance of Smoothing filter`() {
-        val filterFactory = FilterFactory()
+        val contractEnhancementFactory = mockk<ContrastEnhancementFactory>()
+        val filterFactory = FilterFactory(contractEnhancementFactory)
         val smoothingOperation = OperationType.SmoothingFilter(
             SmoothingFilterParameters.WholeImageDetails(
                 sigmaSpace = 1.0,
