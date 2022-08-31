@@ -34,7 +34,7 @@ jobs:
         run: chmod +x ./gradlew
       - uses: gradle/gradle-build-action@v2
         with:
-          arguments: clean build test
+          arguments: clean build test --stacktrace
         env:
           ENVIRONMENT: ${{ secrets.ENV }}
 
