@@ -23,6 +23,7 @@ jobs:
           mkdir -p build && cd build
           cmake -D BUILD_SHARED_LIBS=OFF ../opencv-3.4.16
           cmake --build .
+          make -j
           ls build/bin/
           ls build/lib/
       - name: Run chmod to make gradlew executable
