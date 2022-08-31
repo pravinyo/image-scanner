@@ -11,23 +11,26 @@ repositories {
     mavenCentral()
 }
 
-fun shouldLoadFromLocal(): Boolean {
-    val env = System.getenv("env") ?: "local"
-    return env == "local"
+fun getOpencvJarPath(): String {
+    val local = "C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/opencv-3416.jar"
+    return System.getenv("opencv-jar-path") ?: local
+}
+
+fun getOpencvBinaryPath(): String {
+    val local = "C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/x64"
+    return System.getenv("opencv-binary-path") ?: local
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
-    if (shouldLoadFromLocal()) {
-        implementation(files("C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/opencv-3416.jar"))
-    }
+    implementation(files(getOpencvJarPath()))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testImplementation("io.mockk:mockk:1.12.7")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }
 
 tasks.getByName<Test>("test") {
-    jvmArgs("-Djava.library.path=C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/x64")
+    jvmArgs("-Djava.library.path=${getOpencvBinaryPath()}")
     useJUnitPlatform()
 }
 

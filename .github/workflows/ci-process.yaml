@@ -13,20 +13,18 @@ jobs:
           java-version: 11
           distribution: 'adopt'
           cache: gradle
-
-      - name: Cache OpenCV
-        id: opencv-cache
-        uses: actions/cache@v2
-        with:
-          path: ./opencv-install
-          key: ${{ runner.os }}-opencv-cache
-      - name: Install OpenCV
-        uses: rayandrews/with-opencv-action@v1
-        with:
-          dir: ./opencv-install
-          cached: ${{ steps.opencv-cache.outputs.cache-hit }}
-          opencv-version: '3.4.16'
-
+      - name: Build Opencv jar and binary
+        shell: bash
+        run: |
+          sudo apt update && sudo apt install -y cmake g++ wget unzip
+          wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.16.zip
+          unzip opencv.zip
+          sudo apt-get install -y ant
+          mkdir -p build && cd build
+          cmake -D BUILD_SHARED_LIBS=OFF ../opencv-3.4.16
+          cmake --build .
+          ls build/bin/
+          ls build/lib/
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - uses: gradle/gradle-build-action@v2
