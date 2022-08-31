@@ -24,8 +24,8 @@ jobs:
           cmake -D BUILD_SHARED_LIBS=OFF ../opencv-3.4.16
           cmake --build .
           make -j
-          ls build/bin/
-          ls build/lib/
+          ls ./build/bin/
+          ls ./build/lib/
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - uses: gradle/gradle-build-action@v2
