@@ -20,12 +20,17 @@ jobs:
           wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.16.zip
           unzip opencv.zip
           sudo apt-get install -y ant
-          mkdir -p build && cd build
+          mkdir -p buildOpencv && cd buildOpencv
           cmake -D BUILD_SHARED_LIBS=OFF ../opencv-3.4.16
           cmake --build .
           make -j
-          ls ./build/bin/
-          ls ./build/lib/
+          ls `pwd`
+          mkdir -p ../opencv-artifact
+          cp ./bin/opencv-3416.jar ../opencv-artifact/opencv_3416.jar
+          cp ./lib/libopencv_java3416.so ../opencv-artifact/libopencv_java3416.so
+          ls ./bin/
+          ls ./lib/
+          ls ../opencv-artifact/
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - uses: gradle/gradle-build-action@v2
