@@ -13,7 +13,7 @@ repositories {
 
 fun getOpencvJarPath(): String {
     val local = "C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/opencv-3416.jar"
-    val env = System.getenv("env") ?: "dev"
+    val env = System.getenv("ENVIRONMENT") ?: "dev"
     return if(env == "CI") {
         "/home/runner/work/image-scanner/image-scanner/opencv-artifact/opencv_3416.jar"
     }else {
@@ -23,7 +23,7 @@ fun getOpencvJarPath(): String {
 
 fun getOpencvBinaryPath(): String {
     val local = "C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/x64"
-    val env = System.getenv("env") ?: "dev"
+    val env = System.getenv("ENVIRONMENT") ?: "dev"
     return if(env == "CI") {
         "/home/runner/work/image-scanner/image-scanner/opencv-artifact/libopencv_java3416.so"
     }else {

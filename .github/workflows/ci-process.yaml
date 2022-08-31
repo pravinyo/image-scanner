@@ -13,27 +13,29 @@ jobs:
           java-version: 11
           distribution: 'adopt'
           cache: gradle
-      - name: Build Opencv jar and binary
-        shell: bash
-        run: |
-          sudo apt update && sudo apt install -y cmake g++ wget unzip
-          wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.16.zip
-          unzip opencv.zip
-          sudo apt-get install -y ant
-          mkdir -p buildOpencv && cd buildOpencv
-          cmake -D BUILD_SHARED_LIBS=OFF ../opencv-3.4.16
-          cmake --build .
-          make -j
-          ls `pwd`
-          mkdir -p ../opencv-artifact
-          cp ./bin/opencv-3416.jar ../opencv-artifact/opencv_3416.jar
-          cp ./lib/libopencv_java3416.so ../opencv-artifact/libopencv_java3416.so
-          ls ./bin/
-          ls ./lib/
-          ls ../opencv-artifact/
+#      - name: Build Opencv jar and binary
+#        shell: bash
+#        run: |
+#          sudo apt update && sudo apt install -y cmake g++ wget unzip
+#          wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.16.zip
+#          unzip opencv.zip
+#          sudo apt-get install -y ant
+#          mkdir -p buildOpencv && cd buildOpencv
+#          cmake -D BUILD_SHARED_LIBS=OFF ../opencv-3.4.16
+#          cmake --build .
+#          make -j
+#          ls `pwd`
+#          mkdir -p ../opencv-artifact
+#          cp ./bin/opencv-3416.jar ../opencv-artifact/opencv_3416.jar
+#          cp ./lib/libopencv_java3416.so ../opencv-artifact/libopencv_java3416.so
+#          ls ./bin/
+#          ls ./lib/
+#          ls ../opencv-artifact/
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - uses: gradle/gradle-build-action@v2
         with:
           arguments: clean build test
+        env:
+          ENVIRONMENT: ${{ secrets.ENV }}
 
