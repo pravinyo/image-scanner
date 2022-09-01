@@ -62,4 +62,6 @@ jobs:
           arguments: clean build jar publish
         env:
           ENVIRONMENT: ${{ secrets.ENV }}
+          GPR_USER: ${{ secrets.GPR_USER }}
+          GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
 
