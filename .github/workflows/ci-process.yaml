@@ -6,14 +6,30 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
           java-version: 11
           distribution: 'adopt'
           cache: gradle
-      - name: Build Opencv jar and binary
+
+      - name: Cache opencv jar and binary
+        id: cache-opencv
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-opencv-artifacts
+        with:
+          path: ./opencv-artifact/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-opencv.outputs.cache-hit != 'true' }}
+        name: Build Opencv jar and binary
+        continue-on-error: true
         shell: bash
         run: |
           sudo apt update && sudo apt install -y cmake g++ wget unzip
@@ -30,11 +46,26 @@ jobs:
           cp ./lib/libopencv_java3416.so ../opencv-artifact/libopencv_java3416.so
           echo "Generated build artifacts details"
           ls ../opencv-artifact/
+
+      - name: Archive opencv artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: opencv-3416
+          path: |
+            ./opencv-artifact/
+
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
+
       - uses: gradle/gradle-build-action@v2
         with:
-          arguments: clean build test --stacktrace
+          arguments: clean build test --scan
         env:
           ENVIRONMENT: ${{ secrets.ENV }}
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-test-report
+          path: build/reports/tests/test/index.html
 
