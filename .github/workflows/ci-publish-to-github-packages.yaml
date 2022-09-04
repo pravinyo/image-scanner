@@ -46,10 +46,10 @@ jobs:
           echo "Showing content of /opencv-artifact"
           ls ../opencv-artifact/
 
-      - name: Archive operncv artifacts
-        uses: actions/upload-artifacts@v3
+      - name: Archive opencv artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: open-3416
+          name: opencv-3416
           path: |
             ./opencv-artifact/
 
