@@ -16,7 +16,21 @@ jobs:
           java-version: 11
           distribution: 'adopt'
 
+      - name: Cache opencv jar and native build artifacts
+        id: cache-opencv
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-opencv-artifacts
+        with:
+          path: ./opencv-artifact/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-key: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Build opencv jar and binary
+        if: ${{ steps.cache-opencv.outputs.cache-hit != 'true' }}
+        continue-on-error: true
         shell: bash
         run: |
           # Install minimal prerequisites
