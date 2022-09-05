@@ -20,9 +20,7 @@ jobs:
           $opencvUrl = "https://github.com/opencv/opencv/releases/download/3.4.16/opencv-3.4.16-vc14_vc15.exe"
           Invoke-WebRequest "$opencvUrl" -OutFile ".\opencv.exe"
           7z x opencv.exe
-          ls
           ls .\opencv
-          pwd
 
       - name: Step Gradle
         uses: gradle/gradle-build-action@v2
@@ -30,4 +28,4 @@ jobs:
       - name: run build and test
         run: ./gradlew clean build test
         env:
-          ENVIRONMENT: ${{ secrets.ENV }}
+          ENVIRONMENT: "Windows-CI"
