@@ -7,7 +7,7 @@
 <dependency>
   <groupId>dev.pravin</groupId>
   <artifactId>image-scanner</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 
@@ -23,3 +23,6 @@
 - To use this library you need to add additional dependency on opencv library (at least 3.4.X)
 - It is implemented using Kotlin language
 - It can be used in Android App or any application which runs on JVM
+
+## Demo Android App
+[Github link](https://github.com/pravinyo/image-scanner-android.git)
