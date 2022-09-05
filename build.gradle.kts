@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.pravin"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -13,23 +13,33 @@ repositories {
 
 fun getOpencvJarPath(): String {
     val local = "C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/opencv-3416.jar"
-    val env = System.getenv("ENVIRONMENT") ?: "dev"
 
-    return if(env == "CI") {
-        "/home/runner/work/image-scanner/image-scanner/opencv-artifact/opencv_3416.jar"
-    }else {
-        local
+    return when (System.getenv("ENVIRONMENT") ?: "dev") {
+        "CI" -> {
+            "/home/runner/work/image-scanner/image-scanner/opencv-artifact/opencv_3416.jar"
+        }
+        "Windows-CI" -> {
+            "D:\\a\\image-scanner\\image-scanner\\opencv\\build\\java\\opencv-3416.jar"
+        }
+        else -> {
+            local
+        }
     }
 }
 
 fun getOpencvNativePath(): String {
     val local = "C:/Users/tripa/Downloads/opencv-3.4.16-vc14_vc15/opencv/build/java/x64"
-    val env = System.getenv("ENVIRONMENT") ?: "dev"
 
-    return if(env == "CI") {
-        "/home/runner/work/image-scanner/image-scanner/opencv-artifact/libopencv_java3416.so"
-    }else {
-        local
+    return when (System.getenv("ENVIRONMENT") ?: "dev") {
+        "CI" -> {
+            "/home/runner/work/image-scanner/image-scanner/opencv-artifact/libopencv_java3416.so"
+        }
+        "Windows-CI" -> {
+            "D:\\a\\image-scanner\\image-scanner\\opencv\\build\\java\\x64"
+        }
+        else -> {
+            local
+        }
     }
 }
 

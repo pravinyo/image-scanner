@@ -1,0 +1,31 @@
+name: Run all tests
+on: [push, pull_request]
+jobs:
+  tests:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'adopt'
+
+      - name: Download opencv dependencies
+        shell: pwsh
+        run: |
+          # Download and unpack sources
+          $opencvUrl = "https://github.com/opencv/opencv/releases/download/3.4.16/opencv-3.4.16-vc14_vc15.exe"
+          Invoke-WebRequest "$opencvUrl" -OutFile ".\opencv.exe"
+          7z x opencv.exe
+          ls .\opencv
+
+      - name: Step Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: run build and test
+        run: ./gradlew clean build test
+        env:
+          ENVIRONMENT: "Windows-CI"

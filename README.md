@@ -1,6 +1,7 @@
 ## Kotlin Library for image processing
 
 [![Publish to Github Packages](https://github.com/pravinyo/image-scanner/actions/workflows/ci-publish-to-github-packages.yaml/badge.svg)](https://github.com/pravinyo/image-scanner/actions/workflows/ci-publish-to-github-packages.yaml)
+[![Run all tests](https://github.com/pravinyo/image-scanner/actions/workflows/ci-tests.yaml/badge.svg)](https://github.com/pravinyo/image-scanner/actions/workflows/ci-tests.yaml)
 
 ```maven
 <dependency>
