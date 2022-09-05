@@ -1,6 +1,3 @@
-import java.util.*
-import java.io.FileInputStream
-
 plugins {
     kotlin("jvm") version "1.7.0"
     java
@@ -8,7 +5,7 @@ plugins {
 }
 
 group = "dev.pravin"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -48,9 +45,6 @@ tasks.getByName<Test>("test") {
     jvmArgs("-Djava.library.path=${getOpencvNativePath()}")
     useJUnitPlatform()
 }
-
-val githubPublishProperties = Properties()
-githubPublishProperties.load(FileInputStream(rootProject.file("githubPublish.properties")))
 
 publishing {
     repositories {
