@@ -30,7 +30,7 @@ class BackupManagerTest {
         backupManager.add(snapshot)
         val actualSize = backupManager.size
 
-        assertEquals(2, actualSize)
+        assertEquals(1, actualSize)
     }
 
     @Test
