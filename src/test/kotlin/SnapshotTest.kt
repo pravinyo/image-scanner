@@ -13,6 +13,7 @@ import transformations.FixedRotationDirection
 import transformations.RotationTransformParameters
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils
+import utils.OperationType
 
 class SnapshotTest {
 
@@ -23,7 +24,8 @@ class SnapshotTest {
 
     @Test
     fun `it should store list of operation`() {
-        val operationList = listOf(OperationType.RotationTransform(
+        val operationList = listOf(
+            OperationType.RotationTransform(
             RotationTransformParameters.FixedDirection(FixedRotationDirection.DIRECTION_CLOCKWISE_90)
         ))
         val snapshot = Snapshot(operationList, Mat(), mockk())
@@ -46,7 +48,8 @@ class SnapshotTest {
     @Test
     fun `it should restore image editor state`() {
         val activeImage = ImageUtils.loadImage("input/sample.jpeg")
-        val operationList = listOf(OperationType.RotationTransform(
+        val operationList = listOf(
+            OperationType.RotationTransform(
             RotationTransformParameters.FixedDirection(FixedRotationDirection.DIRECTION_CLOCKWISE_90)
         ))
         val editor = mockk<ImageEditor>()

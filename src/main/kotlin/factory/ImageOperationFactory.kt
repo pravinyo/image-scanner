@@ -1,6 +1,6 @@
 package factory
 
-import OperationType
+import utils.OperationType
 
 interface ImageOperationFactory<Type> {
     fun createInstance(operationType: OperationType): Type

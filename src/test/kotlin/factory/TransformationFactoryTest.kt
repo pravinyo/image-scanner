@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import transformations.PerspectiveTransformation
 import transformations.RotationTransformParameters
 import transformations.RotationTransformation
+import utils.OperationType
 
 class TransformationFactoryTest {
 

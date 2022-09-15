@@ -1,3 +1,5 @@
+package utils
+
 import contrastenhancement.ClaheParameters
 import contrastenhancement.ImageContrastAdjustParameters
 import contrastenhancement.SaturationCorrectionParameters

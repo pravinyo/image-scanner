@@ -1,10 +1,9 @@
 package commands
 
 import editor.ImageEditor
-import OperationType
+import utils.OperationType
 import factory.TransformationFactory
 import transformations.RotationTransformParameters
-import transformations.RotationTransformation
 
 class RotateCommand(
     private val imageEditor: ImageEditor,

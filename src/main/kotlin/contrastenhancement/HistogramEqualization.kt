@@ -1,7 +1,7 @@
 package contrastenhancement
 
 
-import ImageUtils
+import utils.ImageUtils
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 

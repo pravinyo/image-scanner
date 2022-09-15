@@ -1,6 +1,6 @@
 package commands
 
-import OperationType
+import utils.OperationType
 import editor.ImageEditor
 import factory.TransformationFactory
 import transformations.TranslationTransformParameters

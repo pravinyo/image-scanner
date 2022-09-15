@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import utility.ImageUtils
+import utils.OperationType
 
 class BlackAndWhiteFilterCommandTest {
     @BeforeEach

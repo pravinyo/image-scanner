@@ -15,6 +15,7 @@ import org.opencv.core.Mat
 import org.opencv.core.Size
 import transformations.ScalingTransformParameters
 import transformations.ScalingTransformation
+import utils.OperationType
 
 class ResizeCommandTest {
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.Core
 import transformations.TranslationTransformParameters
+import utils.OperationType
 
 class TranslateCommandTest {
     @BeforeEach

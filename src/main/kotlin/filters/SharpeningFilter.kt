@@ -1,6 +1,6 @@
 package filters
 
-import ImageUtils
+import utils.ImageUtils
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat

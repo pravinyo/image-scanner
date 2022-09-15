@@ -1,6 +1,6 @@
 package commands
 
-import OperationType
+import utils.OperationType
 import editor.ImageEditor
 import factory.TransformationFactory
 import org.opencv.core.Point
