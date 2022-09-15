@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import utility.ImageUtils
+import utils.Point2D
 
 class PerspectiveTransformationTest {
     @BeforeEach
@@ -16,20 +17,20 @@ class PerspectiveTransformationTest {
     @Test
     fun `given 4 points for input and output image, it should transform inside part to separate image`() {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
-        val sourcePoints = mutableListOf<Point>()
-        sourcePoints.add(Point(190.0, 300.0))
-        sourcePoints.add(Point(1100.0, 290.0))
-        sourcePoints.add(Point(198.0, 957.0))
-        sourcePoints.add(Point(1140.0, 957.0))
+        val sourcePoints = mutableListOf<Point2D>()
+        sourcePoints.add(Point2D(190.0, 300.0))
+        sourcePoints.add(Point2D(1100.0, 290.0))
+        sourcePoints.add(Point2D(198.0, 957.0))
+        sourcePoints.add(Point2D(1140.0, 957.0))
 
-        val destinationPoints = mutableListOf<Point>()
-        destinationPoints.add(Point(0.0, 0.0))
-        destinationPoints.add(Point(300.0, 0.0))
-        destinationPoints.add(Point(0.0, 300.0))
-        destinationPoints.add(Point(300.0, 300.0))
+        val destinationPoints = mutableListOf<Point2D>()
+        destinationPoints.add(Point2D(0.0, 0.0))
+        destinationPoints.add(Point2D(300.0, 0.0))
+        destinationPoints.add(Point2D(0.0, 300.0))
+        destinationPoints.add(Point2D(300.0, 300.0))
 
         sourcePoints.forEach{
-            Imgproc.circle(input, it, 4, Scalar(0.0, 0.0, 255.0), 4)
+            Imgproc.circle(input, it.toPoint(), 4, Scalar(0.0, 0.0, 255.0), 4)
         }
         ImageUtils.saveImage("transformation/perspective_1.jpg", input)
         val perspectiveTransformation = PerspectiveTransformation(sourcePoints, destinationPoints)
@@ -45,11 +46,11 @@ class PerspectiveTransformationTest {
     @Test
     fun `given 4 points for input, it should transform inside part to separate image`() {
         val input: Mat = ImageUtils.loadImage("input/sample.jpeg")
-        val sourcePoints = mutableListOf<Point>()
-        sourcePoints.add(Point(190.0, 300.0))
-        sourcePoints.add(Point(1100.0, 290.0))
-        sourcePoints.add(Point(198.0, 957.0))
-        sourcePoints.add(Point(1140.0, 957.0))
+        val sourcePoints = mutableListOf<Point2D>()
+        sourcePoints.add(Point2D(190.0, 300.0))
+        sourcePoints.add(Point2D(1100.0, 290.0))
+        sourcePoints.add(Point2D(198.0, 957.0))
+        sourcePoints.add(Point2D(1140.0, 957.0))
         val perspectiveTransformation = PerspectiveTransformation(sourcePoints)
 
         val actual = perspectiveTransformation.execute(input)
