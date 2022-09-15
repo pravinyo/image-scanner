@@ -33,9 +33,9 @@ class DetectRegionOfInterest(
         Imgproc.HoughLines(edges, lines, 1.0, Math.PI / 180, 100)
 
         val (verticalLines, horizontalLines) = getVerticalHorizontalLines(lines)
-        val origins = findIntersection(verticalLines, horizontalLines, edges.rows(), edges.cols())
+        val intersectionPoints = findIntersection(verticalLines, horizontalLines, edges.rows(), edges.cols())
 
-        val (boundaryPoints, boundaryLines) = getConvexHullBoundarySegments(origins)
+        val (boundaryPoints, boundaryLines) = getConvexHullBoundarySegments(intersectionPoints)
         _boundaryPoints = Point2DUtility.orderedPoints(boundaryPoints).map { it.value }
         _boundaryLines = boundaryLines
     }
@@ -74,11 +74,11 @@ class DetectRegionOfInterest(
                 ImageContrastAdjustParameters(inputBound = Pair(100, 200))
             )
         )
-        val original = contrastFilter.execute(transformedGrayScale)
+        val filteredImage = contrastFilter.execute(transformedGrayScale)
 
         // remove noise
         val med = Mat()
-        Imgproc.medianBlur(original, med, 15)
+        Imgproc.medianBlur(filteredImage, med, 15)
 
         val thr = Mat()
         Imgproc.adaptiveThreshold(med, thr, 255.0, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 23, 2.0)
