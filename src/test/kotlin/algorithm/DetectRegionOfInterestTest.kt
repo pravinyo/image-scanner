@@ -1,21 +1,13 @@
 package algorithm
 
-import contrastenhancement.ImageContrastAdjustParameters
 import factory.ContrastEnhancementFactory
 import factory.FilterFactory
 import factory.TransformationFactory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.opencv.core.*
-import org.opencv.imgproc.Imgproc
+import org.opencv.core.Core
 import utility.ImageUtils
-import utils.ImageUtils.drawLines
-import utils.OperationType
-import utils.Point2D
-import utils.Point2DUtility
 import utils.Point2DUtility.toListOfPoint
-import utils.Point2DUtility.toPoint2D
-import kotlin.math.*
 
 
 internal class DetectRegionOfInterestTest {
