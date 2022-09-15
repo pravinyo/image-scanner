@@ -14,6 +14,7 @@ import transformations.FixedRotationDirection.DIRECTION_CLOCKWISE_90
 import transformations.RotationTransformParameters.FixedDirection
 import utility.AssertionsUtil.areEqual
 import utility.ImageUtils
+import utils.OperationType
 
 class ImageEditorTest {
 

@@ -5,6 +5,7 @@ import factory.FilterFactory
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import utils.OperationType
 
 class NegativeFilterCommandTest {
 

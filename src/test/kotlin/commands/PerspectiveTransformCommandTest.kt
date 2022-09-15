@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.opencv.core.*
+import utils.OperationType
+import utils.Point2D
 
 class PerspectiveTransformCommandTest {
 
@@ -18,7 +20,7 @@ class PerspectiveTransformCommandTest {
     @Test
     fun `it should return perspective operation type`() {
         val imageEditor = mockk<ImageEditor>()
-        val sourcePoints = emptyList<Point>()
+        val sourcePoints = emptyList<Point2D>()
         val transformationFactory = mockk<TransformationFactory>()
 
         val expectedOperation = OperationType.PerspectiveTransform(sourcePoints)

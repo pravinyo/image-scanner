@@ -16,6 +16,7 @@ import org.opencv.core.Point
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.imread
 import transformations.RotationTransformParameters
+import utils.Point2D
 import java.io.File
 
 object Start {
@@ -39,11 +40,11 @@ object Start {
             backupManager = backupManager
         )
 
-        val sourcePoints = mutableListOf<Point>()
-        sourcePoints.add(Point(190.0, 300.0))
-        sourcePoints.add(Point(1100.0, 290.0))
-        sourcePoints.add(Point(198.0, 957.0))
-        sourcePoints.add(Point(1140.0, 957.0))
+        val sourcePoints = mutableListOf<Point2D>()
+        sourcePoints.add(Point2D(190.0, 300.0))
+        sourcePoints.add(Point2D(1100.0, 290.0))
+        sourcePoints.add(Point2D(198.0, 957.0))
+        sourcePoints.add(Point2D(1140.0, 957.0))
 
         val perspectiveTransformCommand = PerspectiveTransformCommand(
             imageEditor = imageEditor,

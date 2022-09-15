@@ -1,6 +1,6 @@
 package filters
 
-import OperationType
+import utils.OperationType
 import contrastenhancement.ClaheParameters
 import factory.ContrastEnhancementFactory
 import factory.FilterFactory

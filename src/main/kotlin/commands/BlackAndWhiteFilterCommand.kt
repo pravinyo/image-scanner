@@ -1,7 +1,7 @@
 package commands
 
 import editor.ImageEditor
-import OperationType
+import utils.OperationType
 import factory.FilterFactory
 import filters.BlackAndWhiteFilterParameters
 

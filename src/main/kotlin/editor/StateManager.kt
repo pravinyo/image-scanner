@@ -1,6 +1,6 @@
 package editor
 
-import OperationType
+import utils.OperationType
 import org.opencv.core.Mat
 import java.util.*
 

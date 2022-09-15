@@ -2,7 +2,6 @@ package commands
 
 import editor.ImageEditor
 import factory.TransformationFactory
-import filters.BlackAndWhiteFilter
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -18,6 +17,7 @@ import org.opencv.core.Size
 import transformations.FixedRotationDirection
 import transformations.RotationTransformParameters.*
 import transformations.RotationTransformation
+import utils.OperationType
 
 internal class RotateCommandTest {
 

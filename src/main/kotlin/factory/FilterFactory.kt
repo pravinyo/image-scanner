@@ -1,6 +1,6 @@
 package factory
 
-import OperationType
+import utils.OperationType
 import filters.*
 
 class FilterFactory(

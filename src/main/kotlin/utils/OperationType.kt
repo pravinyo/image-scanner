@@ -1,3 +1,5 @@
+package utils
+
 import contrastenhancement.ClaheParameters
 import contrastenhancement.ImageContrastAdjustParameters
 import contrastenhancement.SaturationCorrectionParameters
@@ -31,8 +33,8 @@ sealed class OperationType {
     ) : OperationType()
 
     data class PerspectiveTransform(
-        val sourcePoints: List<Point>,
-        val destPoints: List<Point>? = null
+        val sourcePoints: List<Point2D>,
+        val destPoints: List<Point2D>? = null
     ) : OperationType()
 
     data class AdaptiveHistogramEnhancement(

@@ -1,6 +1,6 @@
 package commands
 
-import OperationType
+import utils.OperationType
 
 interface Command {
     fun operationType() : OperationType

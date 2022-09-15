@@ -9,6 +9,7 @@ import transformations.FixedRotationDirection.*
 import transformations.RotationTransformParameters.*
 import utility.AssertionsUtil
 import utility.ImageUtils
+import utils.OperationType
 
 internal class StateManagerTest {
 

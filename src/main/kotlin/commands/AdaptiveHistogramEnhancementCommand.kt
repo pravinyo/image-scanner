@@ -1,6 +1,6 @@
 package commands
 
-import OperationType
+import utils.OperationType
 import contrastenhancement.ClaheParameters
 import editor.ImageEditor
 import factory.ContrastEnhancementFactory

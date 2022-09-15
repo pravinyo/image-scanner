@@ -1,7 +1,7 @@
 package factory
 
-import OperationType
-import OperationType.*
+import utils.OperationType
+import utils.OperationType.*
 import contrastenhancement.*
 
 class ContrastEnhancementFactory : ImageOperationFactory<ContrastEnhancement> {

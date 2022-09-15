@@ -12,6 +12,7 @@ import org.opencv.core.Core
 import org.opencv.core.Mat
 import transformations.FixedRotationDirection.*
 import transformations.RotationTransformParameters.*
+import utils.OperationType
 
 class BackupManagerTest {
 

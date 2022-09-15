@@ -5,6 +5,7 @@ import org.opencv.imgproc.Imgproc
 import transformations.PerspectiveTransformation
 import transformations.RotationTransformation
 import transformations.RotationTransformParameters.ArbitraryDirection
+import utils.Point2DUtility.toListOfPoint2D
 
 class Text(
     private val parameters: TextParameters
@@ -66,7 +67,7 @@ class Text(
 
         addTextTo(intermediateImage, bestPosition)
 
-        val transformedTextImage = PerspectiveTransformation(sourcePoints).execute(intermediateImage)
+        val transformedTextImage = PerspectiveTransformation(sourcePoints.toListOfPoint2D()).execute(intermediateImage)
 
         val intermediateImage2 = Mat.zeros(image.size(), image.type())
         transformedTextImage.copyTo(
