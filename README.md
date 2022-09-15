@@ -7,7 +7,7 @@
 <dependency>
   <groupId>dev.pravin</groupId>
   <artifactId>image-scanner</artifactId>
-  <version>1.0.3</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
@@ -17,6 +17,11 @@
 - It can do different transformation to the image.
 - It can apply different contrast enhancement algorithm to make image better.
 - It has image editor class which does the heavy lifting of managing the changes and can undo the task.
+
+## New in v1.1.0
+- Auto detect the document/box like object in image (DetectRegionOfInterest.kt).
+- added functionality to auto crop the image.
+
 
 ## Technical details
 
