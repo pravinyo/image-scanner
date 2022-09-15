@@ -8,6 +8,7 @@ class BoundaryRegionHandler {
 
     fun process(points: Array<Point2D>) {
         require(points.isNotEmpty()) { "array is of length 0" }
+        hull.clear()
         startProcessing(points)
         assert(isConvex)
     }
@@ -80,9 +81,6 @@ class BoundaryRegionHandler {
             k1++
         }
         if (k1 == n) return  // all points equal
-        // System.out.println("First point not equal to a[0] at "+k1+" is "+a[k1]);
-
-        // find index k2 of first point not collinear with a[0] and a[k1]
         var k2 = k1 + 1
         while (k2 < n) {
             if (Point2D.ccw(a[0]!!, a[k1]!!, a[k2]!!) !== 0) {

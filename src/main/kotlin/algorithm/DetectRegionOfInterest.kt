@@ -38,9 +38,6 @@ class DetectRegionOfInterest(
         val (boundaryPoints, boundaryLines) = getConvexHullBoundarySegments(origins)
         _boundaryPoints = Point2DUtility.orderedPoints(boundaryPoints).map { it.value }
         _boundaryLines = boundaryLines
-        source.release()
-        edges.release()
-        lines.release()
     }
 
     private fun getConvexHullBoundarySegments(

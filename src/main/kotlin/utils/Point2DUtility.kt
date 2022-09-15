@@ -49,7 +49,7 @@ object Point2DUtility {
                 // this point is greater
                 else return@sort 1
             })
-            for ((index, p) in points.withIndex()) {
+            for ((index, p) in points.take(4).withIndex()) {
                 println("Point:$p at index:$index")
                 map[index] = p
             }
